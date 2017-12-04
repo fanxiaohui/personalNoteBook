@@ -1,2 +1,2 @@
 # personalNoteBook
-note book like evernote
+this repo is my private note book like evernote.
