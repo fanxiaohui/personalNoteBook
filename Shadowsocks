@@ -1,19 +1,29 @@
-科学上网：
+科学上网最佳实践：
 
 组件：  申请收费VPS(eg:Vultr) + (免费Shadowsocks Server&&Client )，不再需要chrome代理插件了。
 
-大体步骤：a)申请空间，安装VPS ； b)在VPS安装shadowsocks Server； c)在本地安装shadowsocks Client，填写Server信息，搞定；
+大体步骤：a)申请空间，安装VPS ； b)在VPS安装shadowsocks Server； c)在本地安装shadowsocks Client，填写Server信息；d)启用BBR加速
 
 详细步骤：
+
 a)申请空间，安装VPS：
-有很多VPS厂商，比如Vultr, DigitalOcean,Linode， 我用的是Vultr(https://www.vultr.com/), 支持支付宝付款，创建账号后，付款充值，然后安装虚拟主机，
-我安装的是Ubuntu17.10  + America-Dallas节点
-2. Vultr() : 账号：我的QQ邮箱,   pwd:Vultr+华为工号， 每月5$; 
-3. Vultr VPS info: 
-shadowsocks server info(/etc/shadowsocks-python/config.json)  查看状态:  /etc/init.d/shadowsocks-python  status
-     刚开始VPS的IP始终ping不通，SSH也连不上，经过，可以删除Server，重新再建个Server(Ubuntu17.10),America-Dallas的网速不错；
-ShadowsocksServer一键安装脚本权威参考，脚本直接可用:  https://teddysun.com/486.html  ， 然后在本地客户端填写服务器参数，启用系统代理（PAC模式）；
-windows client: 4.0.6, https://github.com/shadowsocks/shadowsocks-windows/releases
+有很多VPS厂商，比如Vultr, DigitalOcean,Linode， 我用的是Vultr(https://www.vultr.com/), 支持支付宝付款，$5 每月，创建账号后，付款充值，
+然后安装虚拟主机，我安装的是Ubuntu17.10  + America-Dallas节点，网速还不错，安装完VPS后，可以通过界面的Console直接登录操作；
+
+b)在VPS安装shadowsocks Server: 
+    ShadowsocksServer一键安装脚本权威参考:  https://teddysun.com/486.html , 命令如下(我选的是Python版本，按照脚本安装后默认支持"tcp fast_open")：
+    wget --no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh
+    chmod +x shadowsocks-all.sh
+    ./shadowsocks-all.sh 2>&1 | tee shadowsocks-all.log
+    安装过程中要求输入一些参数(如port, password)，安装完成后启动Shadowsocks server:
+    /etc/init.d/shadowsocks-python start
+    启动成功后，通过 /etc/init.d/shadowsocks-python status查看状态，会显示 Shadowsocks (pid xxx) is running...
+    python版本的配置文件（/etc/shadowsocks-python/config.json）保留了刚才设置的那些参数，在客户端需要用到。
+    
+c)在本地安装shadowsocks Client，填写Server信息，       
+   windows client: 4.0.6, https://github.com/shadowsocks/shadowsocks-windows/releases
+   安装完，在本地客户端填写服务器参数（ip,server port,pwd,method,local proxy port=1080），启用系统代理（PAC模式）；
+    
 启用BBR加速（内核4.9以上版本）： https://ifconfiger.com/page/Speed-Up-Network-wit-BBR  启用BBR后，就可以快速访问谷歌了，不启用的话可能访问不了，顺利的话本地可以ping通VSPIP，也能用putty/secureCRT ssh登陆VSP server; 也能访问youtube.com
 启用BBR需要向/etc/sysctl.conf里面写入两个配置：
 net.core.default_qdisc=fq
@@ -23,7 +33,7 @@ net.ipv4.tcp_congestion_control=bbr
 开机启动BBR,为了避免每次重启VPS 都需要运行sysctl -p，你可以在/etc/sysctl.d/80-bbr.conf里面写入net.ipv4.tcp_congestion_control = bbr
 
 遇到的问题：
-刚开始安装的是Centos，选的是洛杉矶节点，分配的IP不好，被GFW了，导致本地无法ping通，也无法ssh连接上，最后删除主机，重新建立主机，
+刚开始安装的是Centos，选的是洛杉矶节点，分配的IP不好(45.32.83.159)，被GFW了，导致本地无法ping通，也无法ssh连接上，最后删除主机，重新建立主机，
 选择了Ubuntu17.10  + America-Dallas节点，IP也自动更换了。
 
 问：怎么知道IP被墙了？
