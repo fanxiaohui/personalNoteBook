@@ -1,0 +1,32 @@
+科学上网：
+
+组件：  申请收费VPS(eg:Vultr) + (免费Shadowsocks Server&&Client )，不再需要chrome代理插件了。
+
+大体步骤：a)申请空间，安装VPS ； b)在VPS安装shadowsocks Server； c)在本地安装shadowsocks Client，填写Server信息，搞定；
+
+详细步骤：
+a)申请空间，安装VPS：
+有很多VPS厂商，比如Vultr, DigitalOcean,Linode， 我用的是Vultr(https://www.vultr.com/), 支持支付宝付款，创建账号后，付款充值，然后安装虚拟主机，
+我安装的是Ubuntu17.10  + America-Dallas节点
+2. Vultr() : 账号：我的QQ邮箱,   pwd:Vultr+华为工号， 每月5$; 
+3. Vultr VPS info: 
+shadowsocks server info(/etc/shadowsocks-python/config.json)  查看状态:  /etc/init.d/shadowsocks-python  status
+     刚开始VPS的IP始终ping不通，SSH也连不上，经过，可以删除Server，重新再建个Server(Ubuntu17.10),America-Dallas的网速不错；
+ShadowsocksServer一键安装脚本权威参考，脚本直接可用:  https://teddysun.com/486.html  ， 然后在本地客户端填写服务器参数，启用系统代理（PAC模式）；
+windows client: 4.0.6, https://github.com/shadowsocks/shadowsocks-windows/releases
+启用BBR加速（内核4.9以上版本）： https://ifconfiger.com/page/Speed-Up-Network-wit-BBR  启用BBR后，就可以快速访问谷歌了，不启用的话可能访问不了，顺利的话本地可以ping通VSPIP，也能用putty/secureCRT ssh登陆VSP server; 也能访问youtube.com
+启用BBR需要向/etc/sysctl.conf里面写入两个配置：
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+然后执行命令让这些配置生效： sysctl -p
+如果一切正常，lsmod | grep bbr ,返回值有 tcp_bbr 模块即说明 bbr 已启动
+开机启动BBR,为了避免每次重启VPS 都需要运行sysctl -p，你可以在/etc/sysctl.d/80-bbr.conf里面写入net.ipv4.tcp_congestion_control = bbr
+
+遇到的问题：
+刚开始安装的是Centos，选的是洛杉矶节点，分配的IP不好，被GFW了，导致本地无法ping通，也无法ssh连接上，最后删除主机，重新建立主机，
+选择了Ubuntu17.10  + America-Dallas节点，IP也自动更换了。
+
+问：怎么知道IP被墙了？
+答： https://asm.ca.com/en/ping.php    or   http://ping.chinaz.com/  网站提供免费 ping 测试服务，输入VPS的IP，发现这个IP可以被其它国家的
+节点ping通，唯独China的不行。
+
