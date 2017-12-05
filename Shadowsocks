@@ -1,4 +1,4 @@
-科学上网最佳实践：
+科学上网最佳实践(Shadowsocks)：
 
 一、组件：  申请收费VPS(eg:Vultr) + (免费Shadowsocks Server&&Client )，不再需要chrome代理插件了,Shadowsocks(影梭)的好处是自动识别内外网，只有外网才代理。
 
