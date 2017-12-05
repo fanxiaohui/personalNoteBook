@@ -15,7 +15,7 @@ b)在VPS安装shadowsocks Server:
     wget --no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh
     chmod +x shadowsocks-all.sh
     ./shadowsocks-all.sh 2>&1 | tee shadowsocks-all.log
-    安装过程中要求输入一些参数(如port, password)，安装完成后启动Shadowsocks server:
+    安装过程中要求输入一些参数(如port, password)，安装完成后（还会产生QR二维码用于手机上）, 启动Shadowsocks server:
     /etc/init.d/shadowsocks-python start
     启动成功后，通过 /etc/init.d/shadowsocks-python status查看状态，会显示 Shadowsocks (pid xxx) is running...
     python版本的配置文件（/etc/shadowsocks-python/config.json）保留了刚才设置的那些参数，在客户端需要用到。
