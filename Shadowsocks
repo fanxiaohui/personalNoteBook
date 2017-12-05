@@ -41,9 +41,12 @@ net.ipv4.tcp_congestion_control=bbr
     刚开始安装的是Centos，选的是洛杉矶节点，分配的IP不好(45.32.83.159)，被GFW了，导致本地无法ping通，也无法ssh连接上，最后删除主机，重新建立主机，
 选择了Ubuntu17.10  + America-Dallas节点，IP也自动更换了，重新测试了新的IP发现没有被墙。
 
-问：怎么知道IP被墙了？
+    问：怎么知道IP被墙了？
     答： https://asm.ca.com/en/ping.php    or   http://ping.chinaz.com/  网站提供免费 ping 测试服务，输入VPS的IP，发现这个IP可以被其它国家的
 节点ping通，唯独China的不行。
 
 五、手机版下载：
   https://github.com/shadowsocks/shadowsocks-android/releases 
+
+六、官方wiki
+  https://github.com/shadowsocks/shadowsocks/wiki
