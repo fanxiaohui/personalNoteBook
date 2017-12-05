@@ -53,7 +53,7 @@ net.ipv4.tcp_congestion_control=bbr
   https://github.com/shadowsocks/shadowsocks/wiki  
   
 七、脚本源码：
-  https://github.com/teddysun/shadowsocks_install  提供各种OS环境的脚本，本文用的是万能脚本 shadowsocks-all.sh 
+  https://github.com/teddysun/shadowsocks_install  提供各种OS环境的脚本，本文用的是（2017.11更新的）万能脚本 shadowsocks-all.sh 
 
 八、软件源码
 https://github.com/shadowsocks 包含python, go, rust, scala, c, c++ 等各种语言的开源代码
