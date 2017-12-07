@@ -34,7 +34,7 @@ net.ipv4.tcp_congestion_control=bbr
 设置开机自动启动BBR, 你可以新建文件 /etc/sysctl.d/80-bbr.conf 并写入net.ipv4.tcp_congestion_control = bbr
 
 启用BBR后，就可以快速访问谷歌了，不启用的话可能访问不了，甚至本地无法ping通VSPIP，
-完成上述这些步骤后，本地能用putty/secureCRT ssh登陆VSP server; 也能顺利翻墙了。
+完成上述这些步骤后，本地能用putty/secureCRT ssh登陆VSP server; 也能顺利访问谷歌了。
 
 
 四、整个过程遇到的问题：
