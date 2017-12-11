@@ -1,4 +1,5 @@
-#python 2.7 script: write data to csv,each list map to a column,these lists may have diff length
+#python 2.7 script:  write data to csv , each list map to a column
+#solution1:  lists may have diff length, each keep the origin length
 
 import csv
 from itertools import izip_longest
@@ -16,7 +17,7 @@ myfile.close()
 
 
 
-////////////////////////////////if all lists have same length:
+#solution2: if all lists have same length, or want to truncate to  the min length:
 
 rows = zip(list1,list2,list3,list4,list5)
 import csv
