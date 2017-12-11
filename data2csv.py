@@ -1,4 +1,4 @@
-#python 2.7 script: write data to csv,each list map to a column
+#python 2.7 script: write data to csv,each list map to a column,these lists may have diff length
 
 import csv
 from itertools import izip_longest
@@ -13,3 +13,16 @@ with open('output.csv', 'wb') as myfile:
       wr.writerow(['List1', 'List2'])#first row
       wr.writerows(export_data)
 myfile.close()
+
+
+
+////////////////////////////////if all lists have same length:
+
+rows = zip(list1,list2,list3,list4,list5)
+import csv
+with open('output.csv', 'wb') as f:
+    writer = csv.writer(f)
+    writer.writerow(['col1','col2','col3','col4','col5'])
+    for row in rows:
+        writer.writerow(row)
+f.close()      
