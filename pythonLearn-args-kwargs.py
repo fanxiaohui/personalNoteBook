@@ -13,10 +13,13 @@ def myfunc2(**kwargs):
         print('\n','arg num = ',len(kwargs))
 
 if __name__ == '__main__':    
-    paras = [1,2,3]
-    myfunc(paras) #input one arg:list
-    myfunc(*paras)#input 3 args: 1,2,3
-    myfunc(4,5,6) #input 3 args
+    paras = [1,2,3] #or paras = (1,2,3)
+    myfunc(paras)
+    myfunc(*paras)
+    myfunc(4,5,6)
+    config = {'name':'zeng',
+              'sex' :'male'}
+    myfunc2(**config)
     myfunc2(name = 'liang',age = 30)
         
 
@@ -28,5 +31,7 @@ if __name__ == '__main__':
  arg num =  3
 4 ; 5 ; 6 ; 
  arg num =  3
+name->zeng ; sex->male ; 
+ arg num =  2
 name->liang ; age->30 ; 
  arg num =  2
