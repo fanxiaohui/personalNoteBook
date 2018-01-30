@@ -1,10 +1,12 @@
 
+#decorator: 1) a decorator is a function; 2)input a function, output a new function;3)keep the same function signature
 
-def apply(func: object, *value) -> object:
+
+def apply(func: object, *value) -> object: #outer is a decorator
     return func(*value)
 
 
-def outer(*args) -> object:  #args is a tuple, could accept any number parameters
+def outer(*args) -> object:  
     def inner(word:str):
         print(*args, word)    
     return inner
