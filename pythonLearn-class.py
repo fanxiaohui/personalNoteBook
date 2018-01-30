@@ -8,17 +8,18 @@ class CountFromBy():
         
     def increase(self) -> None:
         self.num += self.step
+        print('increase')
 
-    def __enter__(self) :
+    def __enter__(self):
         print('enter')
-        return CountFromBy(step=15)
+        return self
 
     def __exit__(self, exc_type, exc_value, exc_trace) -> None:
         print('exit')
         
 
 if __name__ == '__main__':
-    with CountFromBy() as c:  # c is return value of __enter__
+    with CountFromBy(start = 10, step = 5) as c:
         c.increase()
         print(c.num)
     
@@ -27,6 +28,6 @@ if __name__ == '__main__':
 ///////////////////output:
 init
 enter
-init
+increase
 15
 exit
