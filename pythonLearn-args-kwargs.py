@@ -12,6 +12,20 @@ def myfunc2(**kwargs): #accept any number key/value pairs
     if kwargs:
         print('\n','arg num = ',len(kwargs))
 
+        
+def myfunc3(*args,**kwargs):
+    print('myfunc3: ')
+    if args:
+        for a in args:
+            print(a, end = ' ; ')
+        print()    
+    if kwargs:
+        for k,v in kwargs.items():
+            print(k,v,sep='->',end=' ; ')
+        print() 
+        
+        
+        
 if __name__ == '__main__':    
     paras = [1,2,3] #or paras = (1,2,3)
     myfunc(paras)
@@ -21,7 +35,8 @@ if __name__ == '__main__':
               'sex' :'male'}
     myfunc2(**config)
     myfunc2(name = 'liang',age = 30)
-        
+    
+    myfunc3(*paras, **config)
 
     
 //////////////output:
@@ -35,3 +50,6 @@ name->zeng ; sex->male ;
  arg num =  2
 name->liang ; age->30 ; 
  arg num =  2
+myfunc3: 
+1 ; 2 ; 3 ; 
+name->zeng ; sex->male ; 
