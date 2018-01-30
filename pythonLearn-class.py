@@ -11,7 +11,7 @@ class CountFromBy():
         self.num += self.step
         print('increase')
 
-    def __enter__(self):
+    def __enter__(self) -> object:
         print('enter')
         return self
 
