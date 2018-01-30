@@ -1,4 +1,5 @@
-# "with" statement call flow:  __init__  ,   __enter__  ,   __exit__
+# "with" statement call flow:  __init__  ,   __enter__ (setup) ,   __exit__ (teardown)
+
 
 class CountFromBy():
     def __init__(self, start:int = 0, step:int = 1) -> None:
