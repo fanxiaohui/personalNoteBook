@@ -1,6 +1,7 @@
 
 #decorator: 1) a decorator is a function; 2)input a function, output a new function;3)keep the same function signature
 
+from functools import wraps
 
 def apply(func: object, *value) -> object: 
     return func(*value)
@@ -13,6 +14,7 @@ def outer(*args) -> object:
     
 
 def decorator(func:object) -> object:
+    @wraps(func) #wraps is a decorator defined in standard lib. this line is good practice for user-defined decorator.
     def wrapper(*args, **kwargs):
         print('new function is called')
         return func(*args, **kwargs)
