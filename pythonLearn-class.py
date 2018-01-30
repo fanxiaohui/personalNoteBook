@@ -19,7 +19,7 @@ class CountFromBy():
         
 
 if __name__ == '__main__':
-    with CountFromBy(start = 10, step = 5) as c:
+    with CountFromBy(start = 10, step = 5) as c: # c is return value of __enter__()
         c.increase()
         print(c.num)
     
