@@ -1,12 +1,12 @@
 
-def myfunc(*args):
+def myfunc(*args): #accept any number args
     for a in args:
         print(a, end=' ; ')
     if args:
         print('\n','arg num = ',len(args))
 
 
-def myfunc2(**kwargs):
+def myfunc2(**kwargs): #accept any number key/value pairs
     for k,v in kwargs.items():
         print(k, v, sep='->', end=' ; ')
     if kwargs:
