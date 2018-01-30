@@ -9,7 +9,7 @@ def apply(func: object, *value) -> object: #apply is a decorator
 def outer(*args) -> object:  
     def inner(*inargs):
         print(*args, *inargs)    
-    return inner
+    return inner #note: don't return inner()
     
 
 if __name__ == '__main__':    
