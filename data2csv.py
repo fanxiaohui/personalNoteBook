@@ -13,7 +13,7 @@ with open('output.csv', 'wb') as myfile:
       wr = csv.writer(myfile)
       wr.writerow(['List1', 'List2'])#first row
       wr.writerows(export_data)
-myfile.close()
+
 
 
 
@@ -26,4 +26,12 @@ with open('output.csv', 'wb') as f:
     writer.writerow(['col1','col2','col3','col4','col5'])
     for row in rows:
         writer.writerow(row)
-f.close()      
+
+            
+            
+#read data from csv
+with open('input.csv') as f:
+      for line in csv.reader(f): # csv.DictReader(f)
+            print(line) #each line form a list(reader), dict(DictReader)
+            
+      
