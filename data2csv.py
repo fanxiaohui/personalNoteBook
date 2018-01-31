@@ -29,7 +29,7 @@ with open('output.csv', 'wb') as f:
 
             
             
-#read data from csv
+#read data from csv, need import csv
 with open('input.csv') as f:
       for line in csv.reader(f): # csv.DictReader(f)
             print(line) #each line form a list(reader), dict(DictReader)
@@ -41,4 +41,4 @@ with open('input.csv') as f:
       for line in f:
             k,v = line.strip().split(',') #strip() to remove \n , suppose two columns each line.
             data[k] = v
-      pprint.pprint(data)      
+      pprint.pprint(data) #import pprint     
