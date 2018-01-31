@@ -35,3 +35,10 @@ with open('input.csv') as f:
             print(line) #each line form a list(reader), dict(DictReader)
             
       
+with open('input.csv') as f:
+      firstline = f.readline()
+      data={}
+      for line in f:
+            k,v = line.strip().split(',') #strip() to remove \n , suppose two columns each line.
+            data[k] = v
+      pprint.pprint(data)      
