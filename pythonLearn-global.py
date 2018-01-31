@@ -1,4 +1,4 @@
-
+#global and local variable, don't try to modify variable through parameter, it's better to change by return value.
 
 i = 1  #global i
 
@@ -25,18 +25,36 @@ def add4():
 lista = []
 
 def append():
-    lista.append(3)
-    print('append')
+    lista.append(3) #modify global lista
+    print('append',lista)
+
+def append2():
+    listb = lista.copy() #modify local list
+    listb.append(4)
+    print('append2',lista, listb)
+
+def append3(arg: list):
+    arg.append(5) #modify extern list
+    print('append3',lista, arg)
 
 if __name__ == '__main__':
     setValue() #ok
     add2() #ok
     add3() #ok    
     append()#ok
-    add4() #UnboundLocalError: local variable 'i' referenced before assignment
+    append2()#ok
+    append3(lista)#ok
+    #add4() #UnboundLocalError: local variable 'i' referenced before assignment
+    
     
 
-
+////////////////////////////////////output:
+setValue
+add2
+add3
+append [3]
+append2 [3] [3, 4]
+append3 [3, 5] [3, 5]
 
         
 
