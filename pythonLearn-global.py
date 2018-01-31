@@ -29,7 +29,7 @@ def append():
     print('append',lista)
 
 def append2():
-    listb = lista.copy() #modify local list
+    listb = lista.copy() #modify local list, or listb = lista[:] or listb = lista[::]
     listb.append(4)
     print('append2',lista, listb)
 
