@@ -341,15 +341,8 @@ C 和 C++ 学习笔记
                   其次，因为register变量不存放在内存中，所以不能用“&”来获取register变量的地址。
 8. 宏定义: #define SECONDS_PER_YEAR   (60 * 60 * 24 * 365)UL  预处理器将为你计算常数表达式的值，因此写出计算过程会更清晰而没有代价；
    #define MIN(A,B)    ((A) <=  (B) ? (A) : (B))   least = MIN(*p++, b); 说明用宏定义函数是有副作用的，最好用Inline;
-   inline int MIN(int a,int b) //inline定义的函数一般是有返回值的，而define定义的函数:1)如果有return，那不能作为一个值来使用；2）如果要作为值来使用，那就是一个不带return的复合表达式;
-   {
-     return (a <=  b ? a : b);
-   }
-   #define checkbuffvalid(pbuff)\
-    if(GLO_NULL == pbuff)\
-    {\
-        return GLO_FALSE;\
-    }
+   inline int MIN(int a,int b) //inline定义的函数一般是有返回值的，而define定义的函数:1)如果有return，那不能作为一个值来使用；2）如果要作为值来使用，那就是一个不带return的复合表达式;比如(a <=  b ? a : b);
+   
    8.1)宏定义还可以用来快捷访问嵌套结构体里面的成员；
    8.2)用define定义函数时，建议将语句块放入do{..}while(0),同时在调用处加上;号，当宏参数有赋值，递增递减时，要小心了；
    8.3)宏的一个独特优势：可以使用##合并宏参数得到新变量；
@@ -690,8 +683,7 @@ template <class F, class S> UserStorage::CNodeFast<F> UserStorage::CDatabase<F, 
             #pragma CODE_SECTION(".macBufferStatusBundler") 自定义代码段；
             #pragma warning(disable:4507;once:4385;error:164) 不显示4507号警告信息，4385号警告信息仅报告一次，把164号警告信息作为错误对待；
             #pragma message("output") 在编译时输出打印信息，可以和#ifdef结合使用来判断某个宏是否激活；
-            #pragma GCC diagnostic ignored "-Wsign-conversion"
-            #pragma MUST_ITERATE(min=1,max=20,step=1); 针对for循环做并行优化，某些编译器才支持；
+            #pragma GCC diagnostic ignored "-Wsign-conversion" 忽略这类问题            
 
 47.重构： 1）当一个类的成员只包含1个子对象时，这个类可以被干掉了，用子对象类来替代；
 48.make: 使用-n 开关，可预演make过程，并不会真的执行make过程；
