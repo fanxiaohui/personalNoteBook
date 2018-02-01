@@ -32,8 +32,8 @@ def append():
     print('append',lista)
 
 def append2():
-    listb = lista.copy() #modify local list, or listb = lista[:] or listb = lista[::]
-    listb.append(4)
+    listb = lista.copy() #define local listb, or listb = lista[:] or listb = lista[::]
+    listb.append(4) #not impact lista
     print('append2',lista, listb)
 
 def append3(arg: list):
