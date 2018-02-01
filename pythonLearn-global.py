@@ -8,6 +8,10 @@ i = 1  #global i
 def setValue():
     i = 2  #define local, hidden global i, global i not change.
     print('setValue')
+    
+def setValue2(i):
+    i = 2  #not change extern i.  argument i refer to a new object(2), dettach with extern
+    print('setValue')    
 
 def add2(): 
     global i
