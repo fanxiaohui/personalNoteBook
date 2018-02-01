@@ -1,9 +1,12 @@
 #global and local variable, don't try to modify variable through parameter, it's better to change by return value.
 
+#when you make an assignment to a variable in a scope, that variable becomes local and shadow other same-name varialbe in outer scope.
+
+
 i = 1  #global i
 
 def setValue():
-    i = 2  #modify global value
+    i = 2  #define local, hidden global i, global i not change.
     print('setValue')
 
 def add2(): 
