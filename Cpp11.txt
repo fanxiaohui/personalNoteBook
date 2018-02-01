@@ -1,5 +1,7 @@
-http://www.cplusplus.com/   所有C++11的新特性都可以在这个网址找到example
-<The Boost C++ Libraries>:  https://theboostcpplibraries.com/  学习boost有助于深入理解C++特性的本质；
+http://www.cplusplus.com/   所有C++11的新特性都可以在这个网址找到example
+《Effective Modern C++》
+<C+++Primer>中文第5版
+
 
 
 C++11的三个重点特性：1)资源管理 RAII (smart pointer/ shared_ptr ), 再也不用担心内存泄露，RAII的核心是构造和析构函数的自动调用；
