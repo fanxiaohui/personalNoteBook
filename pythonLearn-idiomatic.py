@@ -39,3 +39,5 @@ for i,v in enumerate(list) 如果不用enumerate只能拿到value
 i,j,k = tuple  is better than: i = t[0],j=t[1],k=t[2]
 
 14.多用decorator来提取common代码，抽离个性化代码
+   @decorator
+   def myfunc:
