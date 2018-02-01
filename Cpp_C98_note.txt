@@ -1,29 +1,20 @@
 
 C 和 C++ 学习笔记
+1.<Effective C++>   
+2.<Effective STL>   
+3.<C++ Primer:5 Edition>   
+4.<Effective Modern C++>
+5.《深度探索C++对象模型》侯捷翻译；
+6.《c缺陷和陷阱》
+7.《C和指针》Kenneth A.Reek著，徐波翻译
+8.《程序员的自我修养---链接、装载与库》俞甲子，石凡，潘爱民 著；
+9.《LINUX内核源代码情景分析》+《深入理解linux内核》+《LINUX内核完全剖析--基于0.12内核》；
+10.《大话处理器-处理器基础知识读本》, 万木杨著，很好；
+11.《C语言接口和实现》
 
-0.C++ ebooks pdf download: http://www.allitebooks.com/effective-modern-c/
-0.http://blog.csdn.net/column/details/pearls.html  《编程珠玑》逐个章节讲解，非常不错；
-1.http://blog.csdn.net/haoel/article/details/3081328  C++ 对象的内存布局,非常清晰；
-4.http://blog.csdn.net/wuchen1004/article/details/2611239  指针详解，非常不错；
-5.http://blog.csdn.net/zxh821112/article/details/8969541  linux动态链接库全局变量共享问题&DLL共享数据段
-6.http://mypyg.iteye.com/blog/845911  http://mypyg.iteye.com/blog/845912    C语言测试：想成为嵌入式程序员应知道的0x10个基本问题
-8.http://blog.csdn.net/shuiyingzi5/article/details/8108190  GCC编译之如何控制共享文件导出符号
-9.《高质量C++/C 编程指南》林锐
-10.《算法导论》非常经典；
-11.《深度探索C++对象模型》侯捷翻译；
-<Effective C++>   <Effective STL>   <C++ Primer:5 Edition>   <Effective Modern C++> 都是经典
-12.《C和指针》Kenneth A.Reek著，徐波翻译
-13.《程序员的自我修养---链接、装载与库》俞甲子，石凡，潘爱民 著；
-14.《c缺陷和陷阱》
-15.《LINUX内核源代码情景分析》+《深入理解linux内核》+《LINUX内核完全剖析--基于0.12内核》；
-17.《大话处理器-处理器基础知识读本》, 万木杨著，很好；
-19.《CODE-编码-隐匿在计算机软硬件背后的语言》，Charles Petzold著，左飞翻译；
-24. http://www.uml.org.cn/c++/20112284.asp 任何时候都适用的20个C++技巧
-26.《C语言接口和实现》
-27.https://github.com/liuxinyu95/AlgoXY/releases 初等算法
-28. Coursera coursera:一流大学免费在线课程平台: 算法视频教程
 
-/////////////////////////////////
+
+
 0.C语言基础：
          0).全局变量初始化可以调用函数实现复杂的初始化, eg: int glo_i = initial();
           0).深刻理解if/else if/else 之间的跳转关系，如果if成立则不执行else if/else,有goto的效果，如果if/else if都不成立，才执行else;
@@ -100,6 +91,9 @@ C 和 C++ 学习笔记
           42).结构体成员大小(struct member): sizeof(((SUlUeDataEntry*)0)->member);       
           43).define/enum/const: define&enum定义常量不需要消耗内存，而const会消耗内存；
           44).const u32 var = (a<b)?a:b; 这里对const变量初始化，只能用?:，不能用if/else;
+
+
+
 
 1.C++基础：
      0).异常：代码中要支持异常的话需要使用特殊的编译器版本，而且系统的所有模块都要统一支持，不能是单个模块支持异常，而且异常的调试缺乏有效的工具支持；
