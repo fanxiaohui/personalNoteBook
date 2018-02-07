@@ -17,3 +17,5 @@
 
 
 7.[refer to blog](https://www.cnblogs.com/yuanzm/p/4089856.html)
+
+8.Two ways to use a package from Pypi:  a) "pip install package" ; b) download source code, unpack and "python setup.py install" it.
