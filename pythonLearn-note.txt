@@ -1,3 +1,9 @@
+工具：
+	1) IPython是一个 for Humans 的 交互式 Python  shell，比自带的 IDLE 更好用。
+	2) Jupyter Notebook 能将文本注释、数学方程、代码和可视化内容全部组合到一个Web文档中，它是机器学习的必备工具。
+	3) Anoconda 是针对windows平台的python包管理工具，同时附带了一大批常用数据科学包，也是数据分析的标配.
+	4) Python Tutor 可帮助理解每一行源代码在程序执行时在计算机中的过程。可以直接在 Web 浏览器中编写 Python 代码，并逐步可视化地运行程序。
+
 
 python推荐的书: <python cookbook> 中文版:  https://github.com/yidao620c/python3-cookbook or :  https://python3-cookbook.readthedocs.io/zh_CN/latest/
 https://pypi.python.org/pypi  python第3方库索引，高质量，推荐使用；
