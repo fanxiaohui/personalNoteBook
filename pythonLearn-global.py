@@ -13,6 +13,14 @@ def setValue2(i):
     i = 2  #not change extern i.  argument i refer to a new object(2), dettach with extern
     print('setValue')    
 
+def setValue3():
+    i = 3
+    def sub():
+        nonlocal i
+        i = 4
+    sub()
+    print(i) #4 with nonlocal, 3 without nonlocal    
+    
 def add2(): 
     global i
     i = i + 1 #modify global value
