@@ -1,0 +1,15 @@
+
+
+Anoconda 是跨平台的python包管理和环境管理工具，同时附带了最常用package(eg:jupyter,notebook, numpy, pandas, flask, requests..)，安装要2G空间.
+尤其适合在windows下使用. Anoconda 里面自带了jupyter notebook这2个package.
+
+安装完后，运行 Anaconda Prompt(类似cmd终端)。
+
+在Anaconda Prompt中执行 conda list查看packages. 如果要安装新的package: conda install package.
+
+在AnacondaPrompt 中执行 jupyter notebook,  会自动打开浏览器并启动服务(http://localhost:8888), 然后在界面中 new notebook, 新建工作簿，写代码，运行；
+
+Jupyter Notebook 能将文本注释、数学方程、代码和可视化内容全部组合到一个Web文档中，它是机器学习的必备工具。
+
+
+refer to : https://www.zhihu.com/question/46309360/answer/254638807
