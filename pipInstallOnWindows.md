@@ -24,3 +24,7 @@
   use proxy:  pip --proxy https://xx.xx.xx.xx:port  install package 
   
   b) download source code, unpack and "python setup.py install" it.
+  
+9.install many packages : put those package name with version in file  requirement.txt,then:
+
+   pip install -r requirement.txt
