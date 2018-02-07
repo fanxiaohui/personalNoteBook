@@ -13,7 +13,7 @@
   
 5.Add this dir to Enviroment Variable (system variable---Path)
 
-6.now it's ok to run on Cmd: pip list ,    will display"pip 9.0.1 ,setuptools 28.8.0"
+6.now it's ok to run on Cmd: pip list ,    will display the installed package , like "pip 9.0.1 ,setuptools 28.8.0"
 
 
 7.[refer to blog](https://www.cnblogs.com/yuanzm/p/4089856.html)
