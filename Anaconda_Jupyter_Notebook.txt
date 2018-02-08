@@ -32,7 +32,7 @@ refer to : https://www.zhihu.com/question/46309360/answer/254638807
  
 IPython Notebook(outdated): 基于IPython的web应用，安装Ipython后终端输入 ipython notebook 就可启动服务，结果保存为.ipynb文件，GitHub支持渲染；
  
-Jupyter Notebook: 替代Ipython notebook, 可以保存代码，文本，图形，公式，关键是还能执行代码，在本地以Web服务形式运行,安装Anoconda后在AnacondaPrompt 中执行 jupyter notebook.
+Jupyter Notebook: 替代Ipython notebook, 可以保存代码，文本，图形，公式，关键是还能执行代码，在本地以Web服务形式运行,安装Anaconda后在Anaconda Prompt终端 中执行 jupyter notebook 启动web服务.
  
 nbviewer : jupyter notebook viewer, 用于渲染.ipynb文件，可以输出为HTML，PDF文件。
  
