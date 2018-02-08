@@ -1,19 +1,21 @@
 
 
-Anoconda 是跨平台的python distribution, 方便package管理和env管理，同时附带了最常用package(eg:jupyter,notebook, numpy, pandas, flask,
+Anaconda 是跨平台的python distribution, 方便package管理和env管理，同时附带了最常用package(eg:jupyter,notebook, numpy, pandas, flask,
 
-requests..)，安装要2G空间. 无论是否之前安装了python, 都可以安装anoconda. 尤其适合在windows下使用.
+requests..)，安装要2G空间. 无论是否之前安装了python, 都可以安装Anaconda. 尤其适合在windows下使用.
 
-Anoconda 里面自带了jupyter and  notebook这2个package.
+Anaconda 里面自带了 jupyter and  notebook这2个package.
 
 安装完后，运行 Anaconda Prompt(类似cmd终端)：
 
-在Anaconda Prompt中执行 conda list查看packages. 如果要安装新的package: conda install package.
+在Anaconda Prompt中执行 conda list查看packages. 如果要安装新的package: conda install package.   conda的用户和pip一样。
 
 在AnacondaPrompt 中执行 jupyter notebook,  会自动打开浏览器并启动服务(http://localhost:8888), 然后在界面中 new notebook, 新建工作簿，写代码，运行；
 
 Jupyter Notebook 能将文本注释、数学方程、代码和可视化内容全部组合到一个Web文档中，它是机器学习的必备工具。
 
+注意：在Anaconda Prompt中输入python来启动自带的python，显示(Python 3.6.3 |Anaconda),  这样可以使用自带的packages,
+如果输入py -3 则运行的是Anaconda之外的python,无法使用Anaconda自带的packages.
 
 refer to : https://www.zhihu.com/question/46309360/answer/254638807
 
@@ -26,12 +28,12 @@ refer to : https://www.zhihu.com/question/46309360/answer/254638807
 
 
 /////////////////////////////////////////////////////概念：
- 	IPython是一个比IDLE更强大的python shell.
+ IPython是一个比IDLE更强大的python shell.
  
-	IPython Notebook(outdated): 基于IPython的web应用，安装Ipython后终端输入 ipython notebook 就可启动服务，结果保存为.ipynb文件，GitHub支持渲染；
+IPython Notebook(outdated): 基于IPython的web应用，安装Ipython后终端输入 ipython notebook 就可启动服务，结果保存为.ipynb文件，GitHub支持渲染；
  
-	Jupyter Notebook: 替代Ipython notebook, 可以保存代码，文本，图形，公式，关键是还能执行代码，在本地以Web服务形式运行。
+Jupyter Notebook: 替代Ipython notebook, 可以保存代码，文本，图形，公式，关键是还能执行代码，在本地以Web服务形式运行,安装Anoconda后在AnacondaPrompt 中执行 jupyter notebook.
  
-	nbviewer : jupyter notebook viewer, 用于渲染.ipynb文件，可以输出为HTML，PDF文件。
+nbviewer : jupyter notebook viewer, 用于渲染.ipynb文件，可以输出为HTML，PDF文件。
  
-	jupyterHub: 提供jupyter文档托管服务，相对于Github的jupyter支持，jupyterHub提供更多的交互性。
+jupyterHub: 提供jupyter文档托管服务，相对于Github的jupyter支持，jupyterHub提供更多的交互性。
