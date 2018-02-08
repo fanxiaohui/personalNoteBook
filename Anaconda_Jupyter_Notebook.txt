@@ -14,6 +14,8 @@ Anaconda 里面自带了 jupyter and  notebook这2个package.
 
 Jupyter Notebook 能将文本注释、数学方程、代码和可视化内容全部组合到一个Web文档中，它是机器学习的必备工具。
 
+Pycharm中设置Anaconda python解释器: File-->Setting--->Project Interpreter---AddLocal---System Interpreter(not conda environment)----choose Anaconda Python.exe
+
 注意：在Anaconda Prompt中输入python来启动自带的python，显示(Python 3.6.3 |Anaconda),  这样可以使用自带的packages, anaconda安装目录中有自带的python.exe. 使用这个版本才可以正常使用那些packages.
 如果运行的是Anaconda之外的python,无法使用Anaconda自带的packages.
 
