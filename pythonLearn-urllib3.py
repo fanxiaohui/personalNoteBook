@@ -2,43 +2,55 @@
 
 #http://httpbin.org/ , provide HTTP Request & Response Service
 #everyone could use this URL to test urllib3 API usage.
+#help(urllib3.ProxyManager) to know the API
 
-import certifi   #this is needed when visit https://xxx
+
+import certifi  #for https
 import urllib3
 
-#http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+
 
 if __name__ == '__main__':
-    proxy = urllib3.ProxyManager('http://xx.xx.xx.xx:port')
+    
+    proxy = urllib3.ProxyManager(proxy_url = 'https://xx.xx.xx.xx:port',
+                                 cert_reqs = 'CERT_REQUIRED',
+                                 ca_certs  = certifi.where()
+                                 )
 
     try:
-        r = proxy.request('GET', 'http://www.baidu.com',retries=False, timeout = 10.0)        
+        r = proxy.request('GET',
+                          'https://www.google.fi',
+                          retries = False,
+                          timeout = 10.0)
         
     except urllib3.exceptions.NewConnectionError:
         print('connection failed')
 
-    print(r.status, '\n', r.headers,'\n')    
-    print('main ok ')
+    print(r.status, '\n', r.headers,'\n')
+    
+    if r.status  in [200, 302] : #200 = ok, 302 = redirection
+        print('\n connect ok. \n')
+    else:        
+        print('\n connect error, status = ', r.status)
         
     
         
 
     
 
-        
-    
-        
+                                   
 
 //////////////////////////////output:
 
 200 
- HTTPHeaderDict({'Date': 'Fri, 09 Feb 2018 06:31:04 GMT', 'Content-Type': 'text/html', 'Content-Length': '14615', 
- 'Last-Modified': 'Tue, 06 Feb 2018 08:39:00 GMT', 'Vary': 'Accept-Encoding', 
- 'Set-Cookie': 'BAIDUID=C4A3D22A850A7F2599042851F1C4C86E:FG=1; expires=Thu, 31-Dec-37 23:55:55 GMT; 
- max-age=2147483647; path=/; domain=.baidu.com, BIDUPSID=C4A3D22A850A7F2599042851F1C4C86E; 
- expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com, PSTM=1518157864; 
- expires=Thu, 31-Dec-37 23:55:55 GMT; max-age=2147483647; path=/; domain=.baidu.com', 
- 'P3P': 'CP=" OTI DSP COR IVA OUR IND COM "', 'X-UA-Compatible': 'IE=Edge,chrome=1', 'Server': 'BWS/1.1', 
- 'Pragma': 'no-cache', 'Cache-control': 'no-cache', 'Accept-Ranges': 'bytes', 'Via': '1.1 fihel1d-proxy.emea.nsn-net.net'}) 
+ HTTPHeaderDict({'Date': 'Fri, 09 Feb 2018 09:31:50 GMT', 'Expires': '-1', 'Cache-Control': 'private, max-age=0', 
+                 'Content-Type': 'text/html; charset=ISO-8859-1', 'P3P': 'CP="This is not a P3P policy! 
+                 See g.co/p3phelp for more info."', 'Server': 'gws', 'X-XSS-Protection': '1; mode=block', 
+                 'X-Frame-Options': 'SAMEORIGIN', 'Set-Cookie': '1P_JAR=2018-02-09-09; expires=Sun, 11-Mar-2018 09:31:50 GMT; 
+                 path=/; domain=.google.fi, NID=123=WrFxknbzRcoYbmB2xUBOa34RYrbfzx_A9-h3qOb79Iv_NxkgeiNVonpxu7EJDu9enpZYTb41gnCg7haEf-Qx9ZXd3QNkLnjneRE2Hv9lIW-hIR7M0FagaEzaWFmqOT0S; 
+                 expires=Sat, 11-Aug-2018 09:31:50 GMT; path=/; domain=.google.fi; HttpOnly', 'Alt-Svc': 'hq=":443"; 
+                 ma=2592000; quic=51303431; quic=51303339; quic=51303338; quic=51303337; 
+                 quic=51303335,quic=":443"; ma=2592000; v="41,39,38,37,35"', 'Accept-Ranges': 'none', 'Vary': 'Accept-Encoding', 'Transfer-Encoding': 'chunked'}) 
 
-main ok 
+
+ connect ok. 
