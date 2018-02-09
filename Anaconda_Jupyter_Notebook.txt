@@ -16,10 +16,12 @@ Jupyter Notebook 能将文本注释、数学方程、代码和可视化内容全
 
 Pycharm中设置Anaconda python解释器: File-->Setting--->Project Interpreter---AddLocal---System Interpreter(not conda environment)----choose Anaconda Python.exe
 
+使用Anaconda python的正确姿势：先用编辑器编写python脚本，然后启动Anaconda Prompt,切换到脚本所在目录，执行:python test.py运行。
+
 注意：在Anaconda Prompt中输入python来启动自带的python，显示(Python 3.6.3 |Anaconda),  这样可以使用自带的packages, anaconda安装目录中有自带的python.exe. 使用这个版本才可以正常使用那些packages.
 如果运行的是Anaconda之外的python,无法使用Anaconda自带的packages.
 
-refer to : https://www.zhihu.com/question/46309360/answer/254638807
+install refer to : https://www.zhihu.com/question/46309360/answer/254638807
 
 /////////////////////////////////////////////////////如果要支持不同的project使用不同的python版本，可以创建env:
     conda env list  列出环境，*表示当前环境
