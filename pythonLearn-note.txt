@@ -18,6 +18,12 @@ https://docs.pytest.org/en/latest/   pytest
 http://pep8.org/    pep8:the good style for python code.
 
 
+4个常用调试手段： help()查看接口用法,    id()打印地址, hex(id()),  type()打印类型,  dir()查看属性(字段，方法)
+
+
+python基本类型: list[], tuple(), dict{:}, set{},   str"" or str''  通过括号类型区分.
+    
+
 python可以用来做网络web编程(后端): 用到flask包处理html数据; 用 The MySQL-Connector(driver for python) 操作SQL语句;python的威力在于粘合不同的语言库.
   python code -----python's DB-API-------mysql connector/python-driver------mySQL.
 
@@ -27,8 +33,7 @@ jupyter notebook: 比python IDLE 更强大的python开发环境，可以同时�
 application-->framework--->library--->systemCall--->virtualFilesystem--->kernal(cpu,memory,device)--->bootloader/BSP/HAL/drivers/firmware---->MCU/DSP/FPGA/GPU/SoC/ARM;
 lib-->modular--->symbol(class/function/variable)
 
-    4个常用调试手段： help()查看接口用法,    id()打印地址, hex(id()),  type()打印类型,  dir()查看属性(字段，方法)
-    python基本类型: list[], tuple(), dict{:}, set{},   str"" or str''  通过括号类型区分.
+    
 
 
 	1. list[ , ],  可以store any type,  不要求元素类型一致，mutable, dynamic, eg:list=[]; list=['str', 1, 1.2]; list = [[1,2],['a','b'],[1.1, 2.2]]; 可用[i]索引，物理内存不连续，内部实现本质是个指针数组，每次修改元素的值都会释放原来的内存然后重新分配内存;
