@@ -1,5 +1,15 @@
 
 
+To use a package from Pypi, 3 ways: 
+
+ 1)conda install package , recommend to use this way, since conda will automatic install the dependent packages. for windows, recommend to install Anaconda,which include conda.
+ 
+ 2)pip install package
+ 
+ 3)download source, unpack and "python setup.py install" it. 
+ 
+ 
+
 Anaconda 是跨平台的python distribution, 方便package管理和env管理(会自动识别依赖的包，一并安装)，同时附带了最常用package(eg:jupyter,notebook, numpy, pandas, flask,
 
 requests)，安装要2G空间. 无论是否之前安装了python, 都可以安装Anaconda. 尤其适合在windows下使用. 安装目录中有自带的python.exe.
