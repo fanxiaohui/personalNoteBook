@@ -8,7 +8,7 @@ To use a package from Pypi, 3 ways:
  
  3)download source, unpack and "python setup.py install" it. 
  
- 
+Anaconda安装完后提供3样工具：Spyder IDE+ Prompt terminal+ jupyter notebook; 
 
 Anaconda 是跨平台的python distribution, 方便package管理和env管理(会自动识别依赖的包，一并安装)，同时附带了最常用package(eg:jupyter,notebook, numpy, pandas, flask,
 
