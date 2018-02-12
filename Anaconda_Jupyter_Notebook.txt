@@ -51,3 +51,11 @@ Jupyter Notebook: 替代Ipython notebook, 可以保存代码，文本，图形�
 nbviewer : jupyter notebook viewer, 用于渲染.ipynb文件，可以输出为HTML，PDF文件。
  
 jupyterHub: 提供jupyter文档托管服务，相对于Github的jupyter支持，jupyterHub提供更多的交互性。
+
+
+//////////////////////////////////////////////////////
+Anaconda install tensorflow guide:   http://blog.csdn.net/u010858605/article/details/64128466
+
+设置 清华仓库镜像，下载package包会更快：
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --set show_channel_urls yes
