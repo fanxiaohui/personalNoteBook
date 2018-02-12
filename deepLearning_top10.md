@@ -21,5 +21,7 @@
 
 [NVIDIA,Digits](https://github.com/NVIDIA/DIGITS) Deep Learning GPU Training System
 
+[Chainer,Pfnet](https://github.com/chainer/chainer) A flexible framework of neural networks for deep learning, a python lib.
+
 
 
