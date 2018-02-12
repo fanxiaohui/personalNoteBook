@@ -36,8 +36,8 @@ install refer to : https://www.zhihu.com/question/46309360/answer/254638807
 /////////////////////////////////////////////////////如果要支持不同的project使用不同的python版本，可以创建env:
     conda env list  列出环境，*表示当前环境
     conda env remove -n py36  删除环境
-    conda create -n py36 python=3.6 创建环境
-    activate py36 进入环境
+    conda create -n py36 python=3.6 创建环境(指定python版本)，新环境中的package很少，需要使用conda install 安装，每个环境的package都是独立的。
+    activate py36 进入环境
     deactivate   离开环境
 
 
