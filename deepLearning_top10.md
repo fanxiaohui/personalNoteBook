@@ -23,8 +23,12 @@
 
 [Chainer,Pfnet](https://github.com/chainer/chainer) A flexible framework of neural networks for deep learning, a python lib.
 
+[Scikit Learn](https://github.com/scikit-learn/scikit-learn)machine learning in Python
 
 
-###some other good resource
+
+### some other good resource
 
 [deep learning with jupter notebooks](https://github.com/lianzeng/deep-learning-with-python-notebooks)  Jupyter notebooks for the code samples of the book "Deep Learning with Python"
+
+[machine learning for beginners](https://github.com/lianzeng/ML-Tutorial-Experiment)
