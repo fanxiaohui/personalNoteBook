@@ -25,3 +25,6 @@
 
 
 
+###some other good resource
+
+[deep learning with jupter notebooks](https://github.com/lianzeng/deep-learning-with-python-notebooks)  Jupyter notebooks for the code samples of the book "Deep Learning with Python"
