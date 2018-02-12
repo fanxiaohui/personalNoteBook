@@ -32,3 +32,7 @@
 [deep learning with jupter notebooks](https://github.com/lianzeng/deep-learning-with-python-notebooks)  Jupyter notebooks for the code samples of the book "Deep Learning with Python"
 
 [machine learning for beginners](https://github.com/lianzeng/ML-Tutorial-Experiment) complete code and document
+
+[Deep Learning Zero To All](https://github.com/hunkim/DeepLearningZeroToAll) including python code and test data.
+
+[Theano for beginner](https://github.com/lianzeng/notes-python) python notes,including python on theano
