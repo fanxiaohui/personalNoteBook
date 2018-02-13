@@ -52,7 +52,7 @@ nbviewer : jupyter notebook viewer, 用于渲染.ipynb文件，可以输出为HT
  
 jupyterHub: 提供jupyter文档托管服务，相对于Github的jupyter支持，jupyterHub提供更多的交互性。
 
-转换.ipynb文件为html:  ipython nbconvert --to html xxx.ipynb 
+转换.ipynb文件为html:  ipython nbconvert --to html xxx.ipynb  , 在anoconda prompt中执行。
 
 //////////////////////////////////////////////////////
 Anaconda install tensorflow guide(试验有效):  http://blog.csdn.net/u010858605/article/details/64128466   , 注意Tensorflow目前在windows只支持Python3.5, 安装完tensorflow后最好也在tensorflow的环境中安装spyder(conda install spyder).
