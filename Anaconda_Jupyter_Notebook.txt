@@ -36,7 +36,7 @@ install refer to : https://www.zhihu.com/question/46309360/answer/254638807
 ////////////////////////////////////////////如果要支持不同的project使用不同的python版本，可以创建env，每个env的package都是独立的:
     conda env list  列出环境，*表示当前环境
     conda env remove -n py36  删除环境
-    conda create -n tensorflow python=3.5 创建环境(指定python版本)，新环境中的package很少，需要使用conda install 安装。
+    conda create -n tensorflow python=3.5 创建环境(指定python版本)，新环境中的package很少，建议再安装jupyter && ipython && spyder(conda install xxx)
     activate py36 进入环境
     deactivate   离开环境
 
@@ -56,7 +56,7 @@ jupyterHub: 提供jupyter文档托管服务，相对于Github的jupyter支持，
 查看.ipynb文件：打开anoconda prompt,进入.ipynb所在目录，执行jupyter notebook 会自动打开浏览器并显示当前目录，然后可以直接查看.ipynb文件了，而且可以执行里面的python代码。
 
 //////////////////////////////////////////////////////
-Anaconda install tensorflow guide(试验有效):  http://blog.csdn.net/u010858605/article/details/64128466   , 注意Tensorflow目前在windows只支持Python3.5, 安装完tensorflow后最好也在tensorflow的环境中安装spyder(conda install spyder).
+Anaconda install tensorflow guide(试验有效):  http://blog.csdn.net/u010858605/article/details/64128466   , 注意Tensorflow目前在windows只支持Python3.5, 安装完tensorflow后最好也在tensorflow的环境中安装spyder && jupyter && ipython(conda install xxx).
 
 
 强烈建议设置 清华仓库镜像，下载package包会非常快，设置后使用 conda install package 来安装, 不要使用pip.
