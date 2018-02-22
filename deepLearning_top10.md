@@ -25,7 +25,7 @@
 
 [Scikit Learn](https://github.com/scikit-learn/scikit-learn)  machine learning in Python
 
-
+[Neon Intel](https://github.com/NervanaSystems/neon) deep learning framework committed to best performance on all hardware. Designed for ease-of-use with Python.
 
 ### some other good resource
 
