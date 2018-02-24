@@ -1,7 +1,7 @@
 # "with" statement call flow:  __init__  ,   __enter__ (setup) ,   __exit__ (teardown)
 
 
-class CountFromBy():
+class CountFromBy(): #default derive from object
     def __init__(self, start:int = 0, step:int = 1) -> None:
         self.num = start
         self.step = step
