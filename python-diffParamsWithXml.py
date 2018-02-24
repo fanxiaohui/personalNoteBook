@@ -71,7 +71,14 @@ def write2File(data:dict, dstfile:str):
         for k,v in sorted(data.items()):
             f.write(str(k) + ' = ' + str(v) +'\n')
             
-
+def extractParaName(ifile:str) ->dict:
+    """ extract para=>$value from file to dict """    
+    with open(ifile) as f:
+        result = dict( line.strip('\n, ').split('=>') for line in f if line.count('=>') == 1) #clean code !
+        removespace = {k.strip():v.strip() for k,v in result.items()}
+        return removespace
+            
+            
 if __name__ == '__main__':
     """ find the  diff between ActiveCellSRS and ActiveCell,then compare with xml """
     diffValues = convert(diffParams('PS_CellSetupReq_modify.txt', 'PS_CellSetupReq_base.txt'))
