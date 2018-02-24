@@ -15,7 +15,9 @@
 4. dict查找key
   dict.get(key, None) 如果key不存在返回None
 
-5.动态生成元素(推导):   dict = {num: num*2  for num in list if num  > 1}
+5.动态生成元素(推导):   
+  eg: dict = {num: num*2  for num in list if num  > 1}
+  eg2:  s= "Name1=Value1;Name2=Value2;Name3=Value3"  ,   d = dict(item.split("=") for item in s.split(";"))  
 
 6. 设置dict 默认值，只运行1次:
   dict.setdefault(k, v)
