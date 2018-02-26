@@ -1,0 +1,12 @@
+
+
+from link:   https://coolshell.cn/articles/9104.html     
+
+
+sed -i "s/matchexpression/newstr/g" file.txt  其中-i表示改写原文件，/g=global.  替换匹配的字符串s/
+sed -i "/matchexpression/c  replace_curr_line_with_new_str" my.txt    替换匹配行/c
+sed -i "/matchexpression/a  append_new_line_after_curr_line" my.txt   在匹配的文本处添加新行/a
+sed -i 's/^/#/g' pets.txt  在每行前加#
+sed -i 's/$/#/g' pets.txt  在每行后加#
+sed -i "{/str1/{s/^/#/g}}"  嵌套命令，在str1所在行前加#
+sed -i '3,6 {/This/d}' pets.txt  对3行到第6行，执行命令/This/d, 删除This行
