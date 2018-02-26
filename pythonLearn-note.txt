@@ -6,6 +6,9 @@
 
 
 python推荐的书: <python cookbook> 中文版:  https://github.com/yidao620c/python3-cookbook or :  https://python3-cookbook.readthedocs.io/zh_CN/latest/
+
+http://cs231n.github.io/python-numpy-tutorial/  机器学习中的python基础知识(numpy, scipy, matplotlib), 斯坦福大学整理，这一篇文章就够用了。
+
 https://pypi.python.org/pypi  python第3方库索引，高质量，推荐使用；
 https://docs.python.org/3/library/index.html 官方库
 http://jinja.pocoo.org/  python写的html模板. 结合flask使用；
