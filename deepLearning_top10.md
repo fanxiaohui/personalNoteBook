@@ -36,3 +36,6 @@
 [Deep Learning Zero To All](https://github.com/hunkim/DeepLearningZeroToAll) including python code and test data.
 
 [Theano for beginner](https://github.com/lianzeng/notes-python) python notes,including python on theano
+
+[Python basic for ML](http://cs231n.github.io/python-numpy-tutorial/)  机器学习中的python基础知识(numpy, scipy, matplotlib), 斯坦福大学整理，这一篇文章就够用了。
+
