@@ -10,3 +10,6 @@ sed -i 's/^/#/g' pets.txt  在每行前加#
 sed -i 's/$/#/g' pets.txt  在每行后加#
 sed -i "{/str1/{s/^/#/g}}"  嵌套命令，先查找str1, 然后在匹配行前加#
 sed -i '3,6 {/This/d}' pets.txt  对3行到第6行， 删除This行
+
+sed -i "{/str1/{s/^/#/g}}"  *.rtm  对当前目录下所有的.rtm文件，执行操作：查找str1, 然后在匹配行前加#
+grep -l str1 *.rtm | xargs sed -i "{/str1/{s/^/#/g}}"  效果同上。
