@@ -2,6 +2,7 @@
 
 refer to:   https://coolshell.cn/articles/9104.html     
 
+sed 的优势是: 字符串替换
 
 sed -i "s/matchexpression/newstr/g" file.txt  其中-i表示改写原文件，/g=global.  替换匹配的字符串s/
 sed -i "/matchexpression/c  replace_curr_line_with_new_str" my.txt    替换匹配行/c
