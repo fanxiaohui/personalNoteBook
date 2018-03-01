@@ -28,8 +28,9 @@ refer to: https://learnxinyminutes.com/docs/bash/
 	22. 输入给脚本的参数 $1 $2...
 	23. 输入给脚本的所有参数 $@
 	24. 后台运行 cmd & ,  eg:   ./LteMacClient  script=case.rtm &>testshell.log
-	25. 信号处理函数注册：trap _sighandler SIGINT SIGTERM SIGHUP 其中_sighandler是自定义的信号处理函数，一般是执行exit
+	25. 使用trap来截获信号：trap _sighandler SIGINT SIGTERM SIGHUP 其中_sighandler是自定义的信号处理函数，一般是执行exit
 	26. export BIN_TYPE="htenv"  设置全局变量，用于2个shell脚本通信，比如另一个脚本中 if [ "$BIN_TYPE" != "" ];
+	27. 使用 set -x 来debug输出。使用 set -e 来当有错误发生的时候abort执行。使用 set -o pipefail 来限制错误。
 	27. 疑问： if [xxx] , if ((xx))
 
 
@@ -91,6 +92,8 @@ trap _sighandler SIGINT SIGTERM SIGHUP
 
  /////////////////////////// shell script : copy all git changed files between two commits with directory structure 
 #!/bin/bash
+#set -x
+set -e
 echo "usage: ./knife.sh hash1 hash2 destfolder"
 TARGETDIR=$3
 echo "Coping to $TARGETDIR"
