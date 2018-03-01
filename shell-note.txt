@@ -44,23 +44,22 @@ while  [  $JOB_NUM -gt  $1]  ;do
     JOB_NUM=` jobs -l | grep -e  "Running" |wc -l `
 done
 }
-///////////////////////////////if else
-let i=1
+///////////////////////////////if fi
 if [ $i -eq 0 ]; then
-  echo "ok"
-else
-  echo "wrong"
+  echo "ok"  
 fi
-////////////////if fi
+/////////////////////////////////if else fi
 if [ "$#" -eq 0 ] ; then
-    _help
-    exit 1
+    _helpfunction
+    exit 1   
+else
+  ./LteMacClient script=case.rtm &>case.log
+  echo "LteMacClient exit with $?" >>result.txt 记录程序运行结果，用来判断成功失败
 fi
-//////////////////process filelist in file.txt
+//////////////////process filelist in file.txt, for loop
 Cases=`cat file.txt`
-for case in $Cases
-do
- echo $case
+for case in $Cases; do
+ sh ./RunCaseNew.sh $case  & 调用其它的shell脚本，输入参数，后台运行 
 done
 
 /////////////////////////////for loop  注意有两对括号
@@ -78,6 +77,17 @@ PID=$(echo $(jobs -pr) | sed 's: :,:g')
 (kill -9 $PID 2>/dev/null ) &
 wait $PID 2>/dev/null 
 }
+////////////////////////sighandler
+_sighandler()
+{
+    echo "Interrupt signal received, aborting..."
+    _clear_env
+    exit 1
+}
+
+trap _sighandler SIGINT SIGTERM SIGHUP
+///////////////////////
+
  /////////////////////////// shell script : copy all git changed files between two commits with directory structure 
 #!/bin/bash
 echo "usage: ./knife.sh hash1 hash2 destfolder"
