@@ -1,9 +1,9 @@
 refer to: https://learnxinyminutes.com/docs/bash/
 
 
-
-
-	1. help command , man command ,    eg:  man awk,  help jobs
+	
+	0.任何语言的基本要素：变量，函数定义，逻辑控制：循环，条件分支，顺序.
+	1. help command , man command ,    eg:  man awk,  help jobs
 	2. 脚本执行顺序从前往后，跳过函数定义；
 	3. 脚本对缩进没有要求。
 	4. expect, send:  可以用来自动化交互，避免每次都输入密码；
@@ -44,6 +44,7 @@ while  [  $JOB_NUM -gt  $1]  ;do
     JOB_NUM=` jobs -l | grep -e  "Running" |wc -l `
 done
 }
+WaitJob 5  函数调用
 ///////////////////////////////if fi
 if [ $i -eq 0 ]; then
   echo "ok"  
