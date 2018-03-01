@@ -34,6 +34,10 @@ refer to: https://learnxinyminutes.com/docs/bash/
 	27. 疑问： if [xxx] , if ((xx))
 
 
+///////////////////////
+cat a b | sort | uniq > c   # c = a || b  文本并集
+cat a b | sort | uniq -d > c   # c = a && b  文本交集
+cat a b b | sort | uniq -u > c   # c = a - b   文本差集
 
 
 //////////////////////////function
