@@ -1,7 +1,7 @@
 
-# -*- coding: utf-8 -*-
+
 """
-Created on Fri Mar  9 16:51:48 2018
+data from: https://data.world/uci/iris
 
 @author: lianzeng
 """
