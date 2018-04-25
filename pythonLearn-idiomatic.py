@@ -35,7 +35,10 @@ for i,v in enumerate(list) 如果不用enumerate只能拿到value
 
 11.字符串连接: ''.join(list)
 
-12.打开关闭文件: with open('file') as f
+12.打开关闭文件: 
+  with open('file') as f:
+    for line in f:
+      print(line)
 
 13.unpack tuple:  
 i,j,k = tuple  is better than: i = t[0],j=t[1],k=t[2]
