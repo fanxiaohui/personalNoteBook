@@ -1,0 +1,38 @@
+参考 W3School App 的 java 微课
+
+	1. 入口 main:  public static void main(String[] args)  且必须放在类里面;
+	2. 程序代码都是放在class里面的, Class一般 是public, 
+	3. 基本数据类型: string , boolean, char, byte, short, int,long,  float, double
+	4. 流程控制：  if , else if, else;  for,   while,  do-while; switch-case;
+	5. 继承: 一个派生类只能extends一个基类，但是可以 implements 多个 interface 类,  支持多态；
+	6. List 派生了两个类: ArrayList（类似于C++的 Vector, 动态数组）内存连续,  LinkList (类似于C++的list)内存不连续；
+	7. 固定数组: int[] arr = new int[10]; 数组属性arr.length ==10， 二维数组: int[][] num={{1,2},{3,4}}
+	8. 循环: for(int a : arr)
+	9. Integer 对象： 可用于容器，int 不行；
+	10. 容器: 支持模板参数， Hashmap, HashSet, ArrayList, LinkList, LinkedHashSet,  方法: size()
+	11. 容器算法类Collections: eg,sort()
+	12. 迭代器: 每个容器 都有iterator() 方法， 遍历: while(it.hasNext()){item =  it.next(); } 其中next() 会先返回下一个元素，并自动更新指针;
+	13. 类Class: 构造函数的名字和类名一致, 不存在析构函数,  常见fangf: getXXX, setXXX,  Java中使用new来创建对象；
+	14. 匿名类: 在new对象时建立并override基类方法， 临时效用，new Computer{@Override public void fun(){}}
+	15. 对象比较： 直接用== 比较对象地址，如果要比较对象语义，要@Override hashcode() , equals();
+	16. 函数参数：如果参数是对象，数组，字符串，都是传引用；
+	17. static : 与对象实例无关的，修饰成员变量，成员方法，Math类都是static 方法；
+	18. 常量: public static final int m = 1; 
+	19. 枚举: enum 
+	20. 支持重载，类似C++
+	21. 抽象与接口:  abstract class 抽象类不能定义实例;  interface 接口类只有函数声明，没有属性; 
+	22. 文件名必须和类名一致
+	23. import , 类似C++的include ;  import java.utils.*;
+	24. Override： 覆盖基类函数
+	25. 文件操作： 读文件 File f = new File(path); Scanner r = new Scanner(f); while(r.hasNext()){r.next()} ; r.close();  写文件：f = new Formatter(path); f.format("%s", str); f.close(); 
+		1. f.exsits() 判断文件是否存在
+
+	26. 垃圾回收： 尽管new 对象，不用在乎内存泄露；
+	27. 多线程： 推荐class TFunc implements Runnable {@Override void run() ;}方法,  然后 t = new Thread(new TFunc()); t.start(); 支持优先级设置 setPriority
+		1. 记住： thread.sleep() 必须放在try/catch
+
+	28. 异常: try{} catch(Exception e)， 如果函数体出现throw语句，则在函数声明处也要加上throw;
+	29. 注释: //   ,   /* */
+	30. 交互输入： input = new Scanner(System.in); str = input.nextLine(); 
+	31. 打印: System.out.printIn(str);
+
