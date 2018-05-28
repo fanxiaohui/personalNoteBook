@@ -60,7 +60,7 @@ Anaconda install tensorflow guide(试验有效):  http://blog.csdn.net/u01085860
 jupyter notebook中使用tensorflow，需要在prompt中（tensorflow环境）执行: ipython kernelspec install-self --user ，结果显示Installed kernelspec python3 就可以了。
 
 
-强烈建议设置 清华仓库镜像，下载package包会非常快，设置后使用 conda install package 来安装, 不要使用pip.
+用国内网络下载时，强烈建议设置 清华仓库镜像，下载package包会非常快，设置后使用 conda install package 来安装, 不要使用pip.
 refer to:  https://blog.csdn.net/mtj66/article/details/57074986 
 
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
