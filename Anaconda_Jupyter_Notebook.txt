@@ -63,10 +63,11 @@ jupyter notebook中使用tensorflow，需要在prompt中（tensorflow环境）�
 用国内网络下载时，强烈建议设置 清华仓库镜像，下载package包会非常快，设置后使用 conda install package 来安装, 不要使用pip.
 refer to:  https://blog.csdn.net/mtj66/article/details/57074986 
 
+
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --set show_channel_urls yes
 conda config --show 查看结果
-conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/  如果不需要了可以删除
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/  如果不需要了可以删除（在公司网络，因为使用了国外代理，设置了反而下载不了）
 
 
 //////////////////////////////////////////////////////////// install tensorflow-gpu on windows
