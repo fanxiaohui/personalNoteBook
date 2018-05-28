@@ -65,7 +65,8 @@ refer to:  https://blog.csdn.net/mtj66/article/details/57074986
 
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --set show_channel_urls yes
-conda config --remove channels 'https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/'  如果不需要了可以删除
+conda config --show 查看结果
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/  如果不需要了可以删除
 
 
 //////////////////////////////////////////////////////////// install tensorflow-gpu on windows
