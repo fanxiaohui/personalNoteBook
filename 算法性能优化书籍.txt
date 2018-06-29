@@ -2,14 +2,21 @@
 资料：
 
 
-book<Optimized C++:proven techniques for heightened performance>kurt guntheroth, 2016年出版的，专门针对C++的优化，精品， 有电子书，覆盖面广：STL算法，数据结构，IO，多线程，内存管理，性能测量等等。
 
-book<<Optimizing software in C++> Agner Fog, pdf: www.agner.org/optimize/optimizing_cpp.pdf ，左耳朵陈皓极力推荐的C++性能优化书籍
+book<Optimized C++:proven techniques for heightened performance>kurt guntheroth, 2016年出版的，专门针对C++的优化，实战经验， 有电子书，覆盖面广：STL算法，数据结构，IO，多线程，内存管理，性能测量等等。
+
+book<c++ concurrency in action: practical multithreading >多线程高并发C++最佳实践
+
+book<Optimizing software in C++ An optimization guide for Windows Linux and Mac platforms> Agner Fog,左耳朵陈皓极力推荐的C++性能优化书籍，涉及编译器，内存访问，多线程，代码级别，windows/linux/mac平台，最后更新时间2018-5-21
+
+book<Accelerated C++ Practical Programming by Example.pdf> 结合例子提升C++性能
+
+
 book<编程珠玑>总结了一些性能优化思想
 book<高性能 MySQL 第三版.pdf>
 book<提高C++性能的编程技术> Dov,Bulka, 左飞翻译-非常好
 book<Linux系统编程 >讲到了IO性能优化；
-book<c++ concurrency in action: practical multithreading >
+
 
 product <Examples Of Performnce Impacting Findings 产品代码性能.pptx>
 dsp <TI DSP CPU cycle optimize 性能调优优化编译器.pdf>
