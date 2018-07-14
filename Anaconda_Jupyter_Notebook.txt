@@ -66,7 +66,7 @@ refer to:  https://blog.csdn.net/mtj66/article/details/57074986
 
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
 conda config --set show_channel_urls yes
-conda config --show 查看结果
+conda config --show 查看结果(channels的值为tsinghua, defaults)
 conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/  如果不需要了可以删除（在公司网络，因为使用了国外代理，设置了反而下载不了）
 
 
