@@ -42,6 +42,21 @@ public class DemoReflect {
 
 }
 
+class CloneUtil{	
+	public static Object clone(Object src) throws  Exception {
+		Class<?> classObj = src.getClass();
+		Object dstObj = classObj.newInstance();//constructor without parameter		
+		Field[] fields = classObj.getDeclaredFields(); //get public+private field						
+		for(Field field:fields) {
+			field.setAccessible(true);//so able to visit private member
+			Object value = field.get(src);
+			field.set(dstObj, value);			
+		}
+		return dstObj;
+		
+	}
+}
+
 class Employee {
 	private String name;
 	private int age;
