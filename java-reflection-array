@@ -1,0 +1,29 @@
+package playGround.reflection;
+
+import java.lang.reflect.Array;
+
+public class ArrayReflect {
+
+	public static void main(String[] args) {
+							
+		Object array= Array.newInstance(String.class, 2);//String[2]
+		Array.set(array,0, "ab");
+		Array.set(array,1, "cd");					
+		for(int i = 0; i < Array.getLength(array); i++) {			
+			System.out.println(Array.get(array,i));			
+		}
+
+		Object array2 = Array.newInstance(int.class, new int[] {3,3});//int[3][3]
+		Array.set(array2, 0, new int[] {10,11,12});
+		for(int i = 0; i<Array.getLength(array2); i++) {
+			Object row = Array.get(array2, i);
+			for(int j = 0; j<Array.getLength(row); j++) {
+				Array.set(row, j, i*j);
+				System.out.print(Array.get(row, j));
+			}
+		}			
+
+	}
+
+}
+
