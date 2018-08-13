@@ -2,8 +2,8 @@ Nodejs (include npm) 安装: https://nodejs.org/en/   , nodejs安装包里面包
 安装完后在cmd查看版本 node -v (v8.11.3),  npm  -v  (5.6.0)
 
 npm下载package设置代理和镜像：
-npm config set proxy http://10.144.1.10:8080  公司里面要设置代理
-npm config set https-proxy http://10.144.1.10:8080  注意这里是https-proxy, 不是 https_proxy
+npm config set proxy http://10.xx.1.10:8080  公司里面要设置代理
+npm config set https-proxy http://10.xx.1.10:8080  注意这里是https-proxy, 不是 https_proxy
 npm config get proxy  查看代理设置结果
 npm config set registry https://registry.npm.taobao.org   设置npm镜像为taobao
 npm config get registry  // 查看镜像
