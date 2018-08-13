@@ -1,5 +1,8 @@
 Nodejs (include npm) 安装: https://nodejs.org/en/   , nodejs安装包里面包含了npm, npm是一个包管理工具, 
 安装完后在cmd查看版本 node -v (v8.11.3),  npm  -v  (5.6.0)
+windows下的.npmrc文件位置： C:\Users\lianzeng\.npmrc
+
+npm脚本package.json的详细介绍：  http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html  
 
 npm下载package设置代理和镜像：
 npm config set proxy http://10.xx.1.10:8080  公司里面要设置代理
@@ -7,13 +10,21 @@ npm config set https-proxy http://10.xx.1.10:8080  注意这里是https-proxy, �
 npm config get proxy  查看代理设置结果
 npm config set registry https://registry.npm.taobao.org   设置npm镜像为taobao
 npm config get registry  // 查看镜像
-npm install  下载  package.json 文件指定的依赖包（类似maven的pom.xml文件）,执行成功后，显示"added 31 packages, removed 75 packages and updated 194 packages in 412.169s"
-npm run build ; 编译项目，会产生很多.js文件，这些.js就是要在浏览器运行的，执行成功后，显示“Compiled successfully.”
+npm install  开始下载  package.json 文件指定的依赖包（类似maven的pom.xml文件）,执行成功后，显示"added 31 packages, removed 75 packages and updated 194 packages in 412.169s"
+npm run build ; 编译项目，会产生很多.js文件，这些.js就是要在浏览器运行的，执行成功后，显示"compiled successfully"
+npm run start 在本地启动http server，但是失败了,没有任何反应，反而 执行 roadhog dev（在package.json所在目录下） 可以成功启动local server(http://localhost:8000/),启动过程中会显示staring server...
 
-npm start 在本地运行roadhog(mock server); 
-
-生产环境： 浏览器访问首页时，服务端的Nginx会把json/html静态页面返回并把Tomcat server ip 告诉broswer,  后续的所有 http request会发给 tomcat server;
+生产环境： 浏览器访问首页时，服务端的Nginx会把json/html静态页面返回并把Tomcat server ip 告诉browser,  后续的所有 http request会发给 tomcat server;
 开发环境： 本地的 roadhog 是一个server mock,  会代替nginx 返回首页静态页面; 
+
+解释：npm run xxx 执行的动作实际上是package.json文件里面scripts这个字段中定义的动作, npm run 显示所有可以执行的命令
+
+npm run start === roadhog dev 
+npm run test === roadhog test
+npm config rm proxy  取消代理
+npm config rm https-proxy 取消代理
+npm i roadhog -g 安装roadhog，安装完后用roadhog -v查看版本，要在本地启动服务必须安装roadhog;
+
 
 
 
