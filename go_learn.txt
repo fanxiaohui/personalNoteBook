@@ -1,12 +1,12 @@
 
-Go语言： 语言层面支持并发（其它语言是通过库或者框架来支持），适合开发高并发的网络服务（无状态），Docker就是用Go语言开发的;
+Go语言： 语言层面支持并发（其它语言是通过库或者框架来支持），适合开发高并发的网络服务（无状态），Docker，以太坊就是用Go语言开发的;
 
-Go语言：用于分布式系统，Docker，以太坊，特长是高并发；  
+
 Go Cloud: 用于跨云平台的服务开发； 类似的有： spring cloud;
-可以在cyber-dojo.org 在线编码测试；
 
-《GoByExample》，《Go 101》电子书，《EffectiveGo》
-耗子在极客时间专栏编程语言一节中推荐了很多参考书
+
+耗子在极客时间专栏编程语言一节中推荐了很多参考书：《GoByExample》，《Go 101》电子书，《EffectiveGo》  可以在cyber-dojo.org 在线编码测试；
+
 https://coolshell.cn/articles/8460.html  Go语言语法  
 https://coolshell.cn/articles/8489.html  Go语言特性
 https://gobyexample.com/   Go by example
