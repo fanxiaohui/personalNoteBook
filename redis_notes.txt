@@ -1,0 +1,332 @@
+*********************************
+Getting redis cli help
+*********************************
+redis-cli --help
+
+*********************************
+using the import
+*********************************
+cat importfile | redis-cli --pipe
+
+*********************************
+Checking redis
+*********************************
+Use script...
+python redistester.py <host> <port>
+
+or
+
+redis-cli ping
+redis-cli -h <host> -p <port> ping
+
+*********************************
+Stopping REDIS (and its sentinel)
+*********************************
+redis-cli shutdown
+
+or 
+
+service redis_6379 stop
+service redis_6379 start
+
+If you start redis in a bash shell with...
+redis-server
+Going Ctrl+C is not guarenteed to stop redis.
+
+
+**********************************
+Telnet to redis
+**********************************
+telnet 127.0.0.1 6379
+
+To exit type...
+QUIT 
+
+Typical instructions....
+
+GET url:foo
+GET customer:externalip
+FLUSHDB				<- removes all keys from current db
+SET url:www.sex.com x EX 1	<- delete a key a second later
+DEL url:www.sex.com		<- delete a key
+
+********************************
+Redis benchmarking
+********************************
+redis-benchmark -q -n 100000 -c 50 -P 12
+
+*****************
+redis db location
+*****************
+/srv/surfprotect_redis_rdb <= on sp
+/var/lib/redis/ <= default <== crap on my docker it is under /root!!! 
+
+# Specify the server verbosity level.
+# This can be one of:
+# debug (a lot of information, useful for development/testing)
+# verbose (many rarely useful info, but not a mess like the debug level)
+# notice (moderately verbose, what you want in production probably)
+# warning (only very important / critical messages are logged)
+
+# CHANGE DYNAMICALLY USING TELENET <ip> 6379
+CONFIG SET loglevel notice 
+logs to /var/log/redis_6379.log
+
+**** getting redis config ***
+echo "CONFIG GET *" | redis-cli
+
+**** clean AOF log ****
+echo "BGREWRITEAOF" | redis-cli <== not needed as of version 2.4
+
+**** find redis version ****
+redis-server --version
+
+no-appendfsync-on-rewrite <== we are going to set this to yes (to prevent latency issues)
+
+**************************
+where redis server is
+**************************
+whereis redis-server
+/usr/bin/redis-server
+
+**************************
+Performing mass insertions (reports how many results)
+**************************
+ echo insertion_commands_file | redis-cli --pipe
+
+
+**********************************
+copying databases between machines
+**********************************
+For databases where the appendonly flag is set to no, you can do the following:
+
+    1)Stop redis (because redis overwrites the current rdb file when it exits).
+    2)Copy you backup rdb file to the redis working directory (this is the dir option in your redis config). Also make sure your backup filename matches the dbfilename config option.
+    3)Start redis.
+
+If, on the other hand, you need to restore a rdb file to an append only database, you should do something along the lines of:
+
+    1)Stop redis (because redis overwrites the current rdb file when it exits).
+    2)Copy your backup rdb file to the redis working directory (this is the dir option in your redis config). Also make sure your backup filename matches the dbfilename config option.
+    3)Change the redis config appendonly flag to no (otherwise redis will ignore your rdb file when it starts).
+    4)Start redis.
+    5)Run redis-cli BGREWRITEAOF to create a new appendonly file.
+    6)Wait until new append file is full. Stop redis	
+    7)Restore redis config appendonly flag to yes.
+    8)Start redis.
+
+*****************************
+key locations
+*****************************
+cat /etc/redis/6379.conf
+
+# How to find data directory
+cat /etc/redis/6379.conf | grep "dir "
+# it might be here
+cd /srv/surfprotect_redis_rdb/
+
+# Log locations
+/var/log/redis_6379.log
+
+# Default location is the user directory... on my dev
+/root/dump.rdb
+
+
+**********
+moving a key
+**********
+RENAME <from> <too>
+
+*********
+flush keys
+*********
+FLUSHALL <== from all databases
+FLUSHDB <== from current db
+INFO <= get stats on server
+
+***********
+get redis pid
+*************
+redis-cli info | grep process_id
+
+# process file system directory
+cd /proc/process_id
+
+*************************
+investigating aof latency
+*************************
+If you want to investigate your latency issues related to the append only file you can use the strace command under Linux:
+sudo strace -p $(pidof redis-server) -T -e trace=fdatasync
+
+The above command will show all the fdatasync(2) system calls performed by Redis in the main thread. With the above command you'll not see the fdatasync system calls performed by the background thread when the appendfsync config option is set to everysec. In order to do so just add the -f switch to strace.
+
+If you wish you can also see both fdatasync and write system calls with the following command. However since write(2) is also used in order to write data to the client sockets this will likely show too many things unrelated to disk I/O. 
+sudo strace -p $(pidof redis-server) -T -e trace=fdatasync,write
+
+Apparently there is no way to tell strace to just show slow system calls so I use the following command:
+sudo strace -f -p $(pidof redis-server) -T -e trace=fdatasync,write 2>&1 | grep -v '0.0' | grep -v unfinished
+
+*****************
+kickof a save
+*****************
+BGSAVE
+
+redis-cli BGSAVE
+
+**************************************
+Delete all keys matching a given regex
+**************************************
+redis-cli KEYS 鈥渒eyname/patttern鈥� | xargs redis-cli DEL 
+
+************************************
+copy all keys from one db to another
+************************************
+#set connection data accordingly
+source_host=localhost
+source_port=6379
+source_db=0
+target_host=localhost
+target_port=6379
+target_db=1
+
+#copy all keys without preserving ttl!
+redis-cli keys \* | while read key; do echo "Copying $key"; redis-cli --raw -h $source_host -p $source_port -n $source_db DUMP "$key" | head -c -1|redis-cli -x -h $target_host -p $target_port -n $target_db RESTORE "$key" 0; done
+
+******************************************
+copy a specific key from one db to another
+******************************************
+redis-cli --raw -h source_host DUMP source_key |  head -c -1  | redis-cli -x -h dest_host RESTORE dest_key 0
+
+# Move OFFICE live customer key to local dev...
+redis-cli -h 127.0.0.1 DEL customer:172.17.42.1; redis-cli --raw -h 82.219.6.1 DUMP customer:82.219.212.253 |  head -c -1  | redis-cli -x -h 127.0.0.1 RESTORE customer:172.17.42.1 0
+
+# ######## (error) ERR Target key name is busy ###> Means you have not deleted the key from the destination properly
+
+****************************
+Look at a load of key values
+******************************************* 
+*******************************************
+# Keys are usually pickled so this a bit crap
+redis-cli keys \* | while read key; do echo "checking $key"; redis-cli --raw GET "$key" | head -c -1; done
+
+# How many values contain a given thing:
+export PYTHONUNBUFFERED=1; redis-cli --raw keys url:* | python unpickle.py | grep -F "something" | wc -l
+
+
+******************************************************
+export PYTHONUNBUFFERED=1; redis-cli --raw keys something:* | python unpickle.py | grep --invert-match "'something': {}" 
+
+
+******************************************************
+Remove all keys matching a pattern (errors if no keys) 
+******************************************************
+redis-cli KEYS "phoo:*" | xargs redis-cli DEL 
+
+redis-cli -n 1 KEYS "url:*" | xargs redis-cli -n 1 DEL	  <<< for db1 doesnt work on urls
+
+redis-cli -n 1 KEYS "url:*" | while read key; do redis-cli -n 1 DEL $key; done
+
+# WORKS BUT UNRELIABLE AND ONLY DOES 250 keys/sec
+redis-cli KEYS "url:*" | while read key; do redis-cli DEL $key; done > temp
+		
+
+****************
+redis-cli 2.8.18
+****************
+
+Usage: redis-cli [OPTIONS] [cmd [arg [arg ...]]]
+  -h <hostname>      Server hostname (default: 127.0.0.1).
+  -p <port>          Server port (default: 6379).
+  -s <socket>        Server socket (overrides hostname and port).
+  -a <password>      Password to use when connecting to the server.
+  -r <repeat>        Execute specified command N times.
+  -i <interval>      When -r is used, waits <interval> seconds per command.
+                     It is possible to specify sub-second times like -i 0.1.
+  -n <db>            Database number.
+  -x                 Read last argument from STDIN.
+  -d <delimiter>     Multi-bulk delimiter in for raw formatting (default: \n).
+  -c                 Enable cluster mode (follow -ASK and -MOVED redirections).
+  --raw              Use raw formatting for replies (default when STDOUT is
+                     not a tty).
+  --no-raw           Force formatted output even when STDOUT is not a tty.
+  --csv              Output in CSV format.
+  --stat             Print rolling stats about server: mem, clients, ...
+  --latency          Enter a special mode continuously sampling latency.
+  --latency-history  Like --latency but tracking latency changes over time.
+                     Default time interval is 15 sec. Change it using -i.
+  --slave            Simulate a slave showing commands received from the master.
+  --rdb <filename>   Transfer an RDB dump from remote server to local file.
+  --pipe             Transfer raw Redis protocol from stdin to server.
+  --pipe-timeout <n> In --pipe mode, abort with error if after sending all data.
+                     no reply is received within <n> seconds.
+                     Default timeout: 30. Use 0 to wait forever.
+  --bigkeys          Sample Redis keys looking for big keys.
+  --scan             List all keys using the SCAN command.
+  --pattern <pat>    Useful with --scan to specify a SCAN pattern.
+  --intrinsic-latency <sec> Run a test to measure intrinsic system latency.
+                     The test will run for the specified amount of seconds.
+  --eval <file>      Send an EVAL command using the Lua script at <file>.
+  --help             Output this help and exit.
+  --version          Output version and exit.
+
+Examples:
+  cat /etc/passwd | redis-cli -x set mypasswd
+  redis-cli get mypasswd
+  redis-cli -r 100 lpush mylist x
+  redis-cli -r 100 -i 1 info | grep used_memory_human:
+  redis-cli --eval myscript.lua key1 key2 , arg1 arg2 arg3
+  redis-cli --scan --pattern '*:12345*'
+
+  (Note: when using --eval the comma separates KEYS[] from ARGV[] items)
+
+When no command is given, redis-cli starts in interactive mode.
+Type "help" in interactive mode for information on available commands.
+
+********************************
+Disable saving
+********************************
+# At the command line
+redis-cli config set save ""
+
+# Via telnet the setting can be read with
+CONFIG GET SAVE
+
+# cron
+# /root/redis_bgsave_cron...
+!/bin/bash
+echo -e 'BGSAVE\r\n' | nc 82.219.6.1 6379
+
+# /etc/cron.d/redis_bgsave...
+10,40 0 * * *   root    /root/redis_bgsave_cron
+
+***************************************************
+How many url keys have we got (run out of hours... actually only takes a few seconds)
+***************************************************
+redis-cli KEYS url:* | wc -l
+
+***************************************************
+uploading from export file (in this case to db1)
+***************************************************
+cat redis-classified-08-09-2015.cmds | redis-cli -n 1 --pipe
+errors: 0, replies: 12102086
+(typical run time on classified =  40 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
