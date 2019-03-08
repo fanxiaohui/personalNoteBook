@@ -1,0 +1,225 @@
+
+
+https://redis.io/topics/cluster-tutorial  搭建 redis-cluster
+https://redis.io/topics/rediscli  使用 redis cli 测试
+http://www.andrewpate.co.uk/takedown/redis_notes.txt  一些常用命令和redis定位
+
+
+可以在本地同时起 redis-server standalone mode 和  redis-server cluster mode , 可以同时运行， kodo中有些服务的redis client驱动仍然要求redis-server 使用standalone mode， 只有 io要求使用redis-cluster mode;
+
+
+cluster 搭建步骤：
+1）起6个redis node,  cd /Users/liangzeng/qbox/redis-cluster-test/7000; ../redis-server ./redis.conf; 进入其他目录，重复这步；pgrep -lf redis-server 确认6个节点起来了
+2）组成cluster , redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001  127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005  --cluster-replicas 1 , 创建3master+3slave; 3master之间做sharding, 每个master有1个slave保证高可用；
+3) 用redis-cli 测试cluster, 可选；
+4)7000目录下的redis.conf是手动建立的，其他3个文件都是cluster自动生成的(nodes.conf, dump.rdb, appendonly.aof), nodes.conf不要去修改，rdb是内存快照，aof是把写命令持久化(文本格式，人类可读);
+
+==================================repeat to  start redis for 6 instances on different port
+
+liangdeMacBook-Pro:7000 liangzeng$ ../redis-server  ./redis.conf
+50582:C 06 Mar 2019 21:59:05.939 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+50582:C 06 Mar 2019 21:59:05.940 # Redis version=5.0.0, bits=64, commit=00000000, modified=0, pid=50582, just started
+50582:C 06 Mar 2019 21:59:05.940 # Configuration loaded
+50582:M 06 Mar 2019 21:59:05.941 * Increased maximum number of open files to 10032 (it was originally set to 4864).
+50582:M 06 Mar 2019 21:59:05.942 * No cluster configuration found, I'm f043649f4657c09730e4c691da1a0c721e705c9d
+                _._
+           _.-``__ ''-._
+      _.-``    `.  `_.  ''-._           Redis 5.0.0 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._
+ (    '      ,       .-`  | `,    )     Running in cluster mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 7000
+ |    `-._   `._    /     _.-'    |     PID: 50582
+  `-._    `-._  `-./  _.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |           http://redis.io
+  `-._    `-._`-.__.-'_.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |
+  `-._    `-._`-.__.-'_.-'    _.-'
+      `-._    `-.__.-'    _.-'
+          `-._        _.-'
+              `-.__.-'
+
+50582:M 06 Mar 2019 21:59:05.944 # Server initialized
+50582:M 06 Mar 2019 21:59:05.944 * Ready to accept connections
+50582:M 06 Mar 2019 22:08:07.061 # configEpoch set to 1 via CLUSTER SET-CONFIG-EPOCH
+50582:M 06 Mar 2019 22:08:07.067 # IP address for this node updated to 127.0.0.1
+50582:M 06 Mar 2019 22:08:11.879 * Replica 127.0.0.1:7005 asks for synchronization
+50582:M 06 Mar 2019 22:08:11.879 * Partial resynchronization not accepted: Replication ID mismatch (Replica asked for 'a2069eb7cfadf007263b16db2cc5cc7264959fdb', my replication IDs are '0d9870407b40b4cd2c799d83a7061e32ee7f94f9' and '0000000000000000000000000000000000000000')
+50582:M 06 Mar 2019 22:08:11.879 * Starting BGSAVE for SYNC with target: disk
+50582:M 06 Mar 2019 22:08:11.879 * Background saving started by pid 50620
+50620:C 06 Mar 2019 22:08:11.882 * DB saved on disk
+50582:M 06 Mar 2019 22:08:11.980 * Background saving terminated with success
+50582:M 06 Mar 2019 22:08:11.981 # Cluster state changed: ok
+50582:M 06 Mar 2019 22:08:11.981 * Synchronization with replica 127.0.0.1:7005 succeeded
+
+====================================================================set up cluster after 6 node startup
+
+liangdeMacBook-Pro:kodo liangzeng$ redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 \
+> 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 \
+> --cluster-replicas 1
+>>> Performing hash slots allocation on 6 nodes...
+Master[0] -> Slots 0 - 5460
+Master[1] -> Slots 5461 - 10922
+Master[2] -> Slots 10923 - 16383
+Adding replica 127.0.0.1:7003 to 127.0.0.1:7000
+Adding replica 127.0.0.1:7004 to 127.0.0.1:7001
+Adding replica 127.0.0.1:7005 to 127.0.0.1:7002
+>>> Trying to optimize slaves allocation for anti-affinity
+[WARNING] Some slaves are in the same host as their master
+M: f043649f4657c09730e4c691da1a0c721e705c9d 127.0.0.1:7000
+   slots:[0-5460] (5461 slots) master
+M: 1d3027e4e033ceded38412ddced17becc18c5c79 127.0.0.1:7001
+   slots:[5461-10922] (5462 slots) master
+M: d8459f803b5a507862e9dbba84ad1c395d4eacda 127.0.0.1:7002
+   slots:[10923-16383] (5461 slots) master
+S: 69ce63c4e1ee3f5659d052609e6af042a12d14d6 127.0.0.1:7003
+   replicates 1d3027e4e033ceded38412ddced17becc18c5c79
+S: c0d395ba05074a26cc8efd8a5d28baff36b1e07c 127.0.0.1:7004
+   replicates d8459f803b5a507862e9dbba84ad1c395d4eacda
+S: e7d9690d780e83c0d38aa0a94a1490e0dc56468f 127.0.0.1:7005
+   replicates f043649f4657c09730e4c691da1a0c721e705c9d
+Can I set the above configuration? (type 'yes' to accept): yes
+>>> Nodes configuration updated
+>>> Assign a different config epoch to each node
+>>> Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join
+...
+>>> Performing Cluster Check (using node 127.0.0.1:7000)
+M: f043649f4657c09730e4c691da1a0c721e705c9d 127.0.0.1:7000
+   slots:[0-5460] (5461 slots) master
+   1 additional replica(s)
+M: 1d3027e4e033ceded38412ddced17becc18c5c79 127.0.0.1:7001
+   slots:[5461-10922] (5462 slots) master
+   1 additional replica(s)
+S: c0d395ba05074a26cc8efd8a5d28baff36b1e07c 127.0.0.1:7004
+   slots: (0 slots) slave
+   replicates d8459f803b5a507862e9dbba84ad1c395d4eacda
+S: e7d9690d780e83c0d38aa0a94a1490e0dc56468f 127.0.0.1:7005
+   slots: (0 slots) slave
+   replicates f043649f4657c09730e4c691da1a0c721e705c9d
+S: 69ce63c4e1ee3f5659d052609e6af042a12d14d6 127.0.0.1:7003
+   slots: (0 slots) slave
+   replicates 1d3027e4e033ceded38412ddced17becc18c5c79
+M: d8459f803b5a507862e9dbba84ad1c395d4eacda 127.0.0.1:7002
+   slots:[10923-16383] (5461 slots) master
+   1 additional replica(s)
+[OK] All nodes agree about slots configuration.
+>>> Check for open slots...
+>>> Check slots coverage...
+[OK] All 16384 slots covered.
+liangdeMacBook-Pro:kodo liangzeng$
+liangdeMacBook-Pro:kodo liangzeng$
+
+==================================== below log from master node
+50582:M 06 Mar 2019 23:42:26.206 # Disconnecting timedout replica: 127.0.0.1:7005
+50582:M 06 Mar 2019 23:42:26.206 # Connection with replica 127.0.0.1:7005 lost.
+50582:M 06 Mar 2019 23:42:26.613 * Replica 127.0.0.1:7005 asks for synchronization
+50582:M 06 Mar 2019 23:42:26.613 * Partial resynchronization request from 127.0.0.1:7005 accepted. Sending 0 bytes of backlog starting from offset 4853.
+50582:M 07 Mar 2019 00:19:18.320 # Connection with replica 127.0.0.1:7005 lost.
+50582:M 07 Mar 2019 00:19:18.321 * Replica 127.0.0.1:7005 asks for synchronization
+50582:M 07 Mar 2019 00:19:18.321 * Partial resynchronization request from 127.0.0.1:7005 accepted. Sending 0 bytes of backlog starting from offset 5105.
+50582:M 07 Mar 2019 02:20:09.426 # Connection with replica 127.0.0.1:7005 lost.
+50582:M 07 Mar 2019 02:20:09.427 * Replica 127.0.0.1:7005 asks for synchronization
+50582:M 07 Mar 2019 02:20:09.427 * Partial resynchronization request from 127.0.0.1:7005 accepted. Sending 0 bytes of backlog starting from offset 5175.
+
+======================================below log from slave node
+50615:M 06 Mar 2019 22:03:02.217 # Server initialized
+50615:M 06 Mar 2019 22:03:02.217 * Ready to accept connections
+50615:M 06 Mar 2019 22:08:07.063 # configEpoch set to 6 via CLUSTER SET-CONFIG-EPOCH
+50615:M 06 Mar 2019 22:08:07.269 # IP address for this node updated to 127.0.0.1
+50615:S 06 Mar 2019 22:08:11.084 * Before turning into a replica, using my master parameters to synthesize a cached master: I may be able to synchronize with the new master with just a partial transfer.
+50615:S 06 Mar 2019 22:08:11.084 # Cluster state changed: ok
+50615:S 06 Mar 2019 22:08:11.877 * Connecting to MASTER 127.0.0.1:7000
+50615:S 06 Mar 2019 22:08:11.878 * MASTER <-> REPLICA sync started
+50615:S 06 Mar 2019 22:08:11.878 * Non blocking connect for SYNC fired the event.
+50615:S 06 Mar 2019 22:08:11.878 * Master replied to PING, replication can continue...
+50615:S 06 Mar 2019 22:08:11.879 * Trying a partial resynchronization (request a2069eb7cfadf007263b16db2cc5cc7264959fdb:1).
+50615:S 06 Mar 2019 22:08:11.880 * Full resync from master: de8fe2b7b7d5a8aa9657501b7d0de9797a9386cf:0
+50615:S 06 Mar 2019 22:08:11.880 * Discarding previously cached master state.
+50615:S 06 Mar 2019 22:08:11.981 * MASTER <-> REPLICA sync: receiving 175 bytes from master
+50615:S 06 Mar 2019 22:08:11.982 * MASTER <-> REPLICA sync: Flushing old data
+50615:S 06 Mar 2019 22:08:11.982 * MASTER <-> REPLICA sync: Loading DB in memory
+50615:S 06 Mar 2019 22:08:11.982 * MASTER <-> REPLICA sync: Finished with success
+50615:S 06 Mar 2019 22:08:11.983 * Background append only file rewriting started by pid 50622
+50615:S 06 Mar 2019 22:08:12.007 * AOF rewrite child asks to stop sending diffs.
+50622:C 06 Mar 2019 22:08:12.007 * Parent agreed to stop sending diffs. Finalizing AOF...
+50622:C 06 Mar 2019 22:08:12.007 * Concatenating 0.00 MB of AOF diff received from parent.
+50622:C 06 Mar 2019 22:08:12.008 * SYNC append only file rewrite performed
+50615:S 06 Mar 2019 22:08:12.084 * Background AOF rewrite terminated with success
+50615:S 06 Mar 2019 22:08:12.084 * Residual parent diff successfully flushed to the rewritten AOF (0.00 MB)
+50615:S 06 Mar 2019 22:08:12.085 * Background AOF rewrite finished successfully
+50615:S 06 Mar 2019 23:42:26.206 # Connection with master lost.
+50615:S 06 Mar 2019 23:42:26.206 * Caching the disconnected master state.
+50615:S 06 Mar 2019 23:42:26.612 * Connecting to MASTER 127.0.0.1:7000
+50615:S 06 Mar 2019 23:42:26.612 * MASTER <-> REPLICA sync started
+50615:S 06 Mar 2019 23:42:26.613 * Non blocking connect for SYNC fired the event.
+50615:S 06 Mar 2019 23:42:26.613 * Master replied to PING, replication can continue...
+50615:S 06 Mar 2019 23:42:26.613 * Trying a partial resynchronization (request de8fe2b7b7d5a8aa9657501b7d0de9797a9386cf:4853).
+50615:S 06 Mar 2019 23:42:26.613 * Successful partial resynchronization with master.
+50615:S 06 Mar 2019 23:42:26.613 * MASTER <-> REPLICA sync: Master accepted a Partial Resynchronization.
+50615:S 07 Mar 2019 00:19:18.320 # MASTER timeout: no data nor PING received...
+50615:S 07 Mar 2019 00:19:18.320 # Connection with master lost.
+50615:S 07 Mar 2019 00:19:18.320 * Caching the disconnected master state.
+50615:S 07 Mar 2019 00:19:18.320 * Connecting to MASTER 127.0.0.1:7000
+50615:S 07 Mar 2019 00:19:18.320 * MASTER <-> REPLICA sync started
+50615:S 07 Mar 2019 00:19:18.321 * Non blocking connect for SYNC fired the event.
+50615:S 07 Mar 2019 00:19:18.321 * Master replied to PING, replication can continue...
+50615:S 07 Mar 2019 00:19:18.321 * Trying a partial resynchronization (request de8fe2b7b7d5a8aa9657501b7d0de9797a9386cf:5105).
+50615:S 07 Mar 2019 00:19:18.321 * Successful partial resynchronization with master.
+50615:S 07 Mar 2019 00:19:18.321 * MASTER <-> REPLICA sync: Master accepted a Partial Resynchronization.
+
+
+=================================================== begin to test
+liangdeMacBook-Pro:redis-cluster-test liangzeng$ pwd
+/Users/liangzeng/qbox/redis-cluster-test
+liangdeMacBook-Pro:redis-cluster-test liangzeng$  redis-cli -c -p 7000
+127.0.0.1:7000> set foo bar
+-> Redirected to slot [12182] located at 127.0.0.1:7002
+OK
+127.0.0.1:7002> set hello world
+-> Redirected to slot [866] located at 127.0.0.1:7000
+OK
+127.0.0.1:7000> get foo
+-> Redirected to slot [12182] located at 127.0.0.1:7002
+"bar"
+127.0.0.1:7002> get hello
+-> Redirected to slot [866] located at 127.0.0.1:7000
+"world"
+127.0.0.1:7000> set qiniu good
+OK
+127.0.0.1:7000> set weather nice
+-> Redirected to slot [8949] located at 127.0.0.1:7001
+OK
+
+
+========================================= redis-server standalone,default port=6379
+
+liangdeMacBook-Pro:qbox liangzeng$ redis-server &
+[1] 80551
+liangdeMacBook-Pro:qbox liangzeng$ 80551:C 08 Mar 2019 11:55:33.555 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+80551:C 08 Mar 2019 11:55:33.555 # Redis version=5.0.0, bits=64, commit=00000000, modified=0, pid=80551, just started
+80551:C 08 Mar 2019 11:55:33.555 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+80551:M 08 Mar 2019 11:55:33.557 * Increased maximum number of open files to 10032 (it was originally set to 4864).
+                _._
+           _.-``__ ''-._
+      _.-``    `.  `_.  ''-._           Redis 5.0.0 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+ |    `-._   `._    /     _.-'    |     PID: 80551
+  `-._    `-._  `-./  _.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |           http://redis.io
+  `-._    `-._`-.__.-'_.-'    _.-'
+ |`-._`-._    `-.__.-'    _.-'_.-'|
+ |    `-._`-._        _.-'_.-'    |
+  `-._    `-._`-.__.-'_.-'    _.-'
+      `-._    `-.__.-'    _.-'
+          `-._        _.-'
+              `-.__.-'
+
+80551:M 08 Mar 2019 11:55:33.564 # Server initialized
+80551:M 08 Mar 2019 11:55:33.565 * DB loaded from disk: 0.001 seconds
+80551:M 08 Mar 2019 11:55:33.565 * Ready to accept connections
+liangdeMacBook-Pro:redis-cluster-test liangzeng$
