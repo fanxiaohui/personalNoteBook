@@ -213,7 +213,7 @@ func main() {
 
 	//7.测试  默认路由和指定路由, 指定路由必须在默认路由之前注册，否则无效
 	r.HandleFunc("/specific", SpecificHandler)
-	// r.PathPrefix("/").Handler(http.HandlerFunc(DefaultHandler)) //这行代码精辟，把一个普通函数转为一个interface instance.
+	// r.PathPrefix("/").Handler(http.HandlerFunc(DefaultHandler)) //这行代码精辟，把一个普通函数adapt为一个interface instance.
 
 	//8.同时使用新mux和原生的Mux, 在升级产品代码时推荐这样做，对于新添加的路由使用新的mux注册,老的路由不变(仍然使用go自带的mux)
 	//路由查找规则：优先在route中查找，如果不成功，再去rawMux中查找，如果都不成功，则404；
