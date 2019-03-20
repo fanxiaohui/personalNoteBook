@@ -6,11 +6,10 @@ func TestJsonMarshal(t *testing.T) {
 	data = emptyMap
 	if data != nil {
 		msg, err := json.Marshal(data)
-		fmt.Println("TestJsonmarshal:", len(msg), data, string(msg), emptyMap == nil, err) // 4, map[], null, true, nil
+		fmt.Println("TestJsonmarshal:", len(msg), data, string(msg), emptyMap == nil, err) // 4, map[], "null", true, nil
 	}
-	// fmt.Println("IsNil=", reflect.ValueOf(data).IsNil()) //true
-	// fmt.Println("IsNil=", reflect.ValueOf("str").IsNil()) //panic
-
+	
+	//marshal nil map will got "null" 
 	msg, err := json.Marshal(emptyMap)
 	fmt.Println("TestJsonmarshal:", len(msg), string(msg), msg, err) // 4, "null", [110 117 108 108],  nil
 
@@ -38,6 +37,7 @@ func TestJsonMarshal(t *testing.T) {
 	err = json.Unmarshal([]byte("notJsonString"), &emptyMap)
 	require.NotNil(t, err) //err = invalid character 'o' in literal null
 
+	//case4: parse valid json string got valid map
 	err = json.Unmarshal([]byte(`{"a":"b"}`), &emptyMap)
 	require.Equal(t, "b", emptyMap["a"]) //nil, b
 	require.Equal(t, nil, err)
