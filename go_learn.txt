@@ -1,23 +1,75 @@
+https://golang.org/pkg/   在线手册
+https://www.programming-books.io/essential/go/ 
+https://gobyexample.com/range-over-channels 
+https://github.com/golang/groupcache  kodo中用这个服务来做服务的local cache(内存缓存)，如果多个请求对同一个key，只会向后端发一个req，这叫singleflight, 其他的请求会等待第1个req的结果(实现用sync.WaitGroup), 参考singleflight.go:Do();
 
-Go语言： 语言层面支持并发（其它语言是通过库或者框架来支持），适合开发高并发的网络服务（无状态），Docker，以太坊就是用Go语言开发的;
+https://github.com/gorilla/mux   一个非常强大的http route 框架，兼容go自带的mux，支持默认路由，正则匹配, middleware,Method,host,参数提取非常方便(但不是按照最长匹配)；因为兼容原生的http.ServeMux，用这个框架可以很容易的升级现有产品中的mux;
+https://godoc.org/github.com/gorilla/mux?importers   可以看到引用了mux的其它pkg 非常多， 据此可以衡量这个项目是否稳定可靠；
+
+https://github.com/gin-gonic/gin 一个http web framework,  qiniu用这个作为前端的web server, 这个框架使用的是httprouter来路由的;
+
+https://github.com/pkieltyka/go-http-routing-benchmark   专门用于对http route性能测试的用例，可以下载到本地跑;
+
+go http 测试框架： https://github.com/onsi/ginkgo  , qiniu用这个框架写测试用例;
+
+Go net/http 超时机制完全手册:    https://colobu.com/2016/07/01/the-complete-guide-to-golang-net-http-timeouts/  
+
+go IDE: 用VSCode, 一般都是打印日志，很少断点调试；
+
+GO cmd:  
+   0. go env 查看各个环境变量值: 
+ 	0.	Go源码中package的名字就是当前目录的名字；
+ 	0.	go build:    -a(force all recompile), -n(dry-run), -p(processor),-race(check conditon),-v(view pkg),-work(keep tmp),-x(print mid cmd)
+         增加调试信息：    go build -gcflags=all="-N -l"  xxx.go   //xxx.go should have main(); 加编译选项是为了增加调试信息
+ 	0.	compiler=gc/gccgo(CGO_ENABLED=1);
+ 	 2. Go命令如果发现第一个参数是.go文件而不是代码包时，会在内部生成一个名为“command-line-arguments”的virtual pkg;
+ 	0.	go test -run TestFunc.//single case 
+ 	0.	Go test ./pkg  is ok, but go test pkg fail ;
+	0.	
+Go test xxx_test.go xxx.go aaa.go  bbb.go .   运行单独的xxx_test.go测试，必须加上对应的源文件和依赖的文件(aaa.go bbb.go)；
+ 	0.	-v //view all log
+	0.	Go install a/b/pkgc:  会去匹配$GOPATH/src/a/b/pkgc，如果找不到会报错；也就是go install的路径要加上$GOPATH/src 才是完整路径；
+注意，以绝对路径的形式提供pkg位置是不会被Go命令认可的,本地代码包路径的表示只能以“./”或“../”开始，
+当GOPATH中包含多个目录时，需要在编译前先设置GOBIN，这样go install命令会把可执行文件安装到GOBIN(如果不设置GOBIN,运行go intall会报错"no install location");注意，环境变量GOPATH中包含的路径不能与环境变量GOROOT的值重复; go get 命令会把pkg安装到$GOPATH的第一个目录下的pkg子目录中；
+ 	0.	 Go vet / go tool vet :   静态语法检查（-all）
+ 	0.	代码包的导入路径:  $GOPATH/src下的子路径;或者$Root/src下的路径；$GOPATH下面有3个目录（src,pkg,bin）,pkg目录放.a库文件，src目录放源码，bin目录放二进制文件，src 目录下面的子路径就是各个package的import path（也就是源码中import xxx）;
+ 	查看import path :      go list -json  ./bucket   ， 全路径=$Root + “src” + $ImportPath; 
+   5. write test case:  t.Fail();  t.Log(xx); t.FailNow(); t.Error() = t.Log() + T.Fail();  t.Fatal(); 
+   6. Go clean; 
+   7. go build -gcflags=all="-N -l" main.go 
+   7. godoc [-ex ] pkgName;  or godoc pkgName symbolName;    godoc -http=:9090 -index ; 
+
+GOPATH:    /Users/liangzeng/qbox/kodo
+"Dir": "/Users/liangzeng/qbox/kodo/src/qiniu.com/kodo/rs/bucket" 全路径=$Root + “src” + $ImportPath; 
+"Root": "/Users/liangzeng/qbox/kodo",    //diff with $GOROOT
+"ImportPath": "qiniu.com/kodo/rs/bucket",    
+"Target": "/Users/liangzeng/qbox/kodo/pkg/darwin_amd64/qiniu.com/kodo/rs/bucket.a" //target路径=$ROOT+”pkg”+$ARCH+$importPath;
+-----------------------------------------
 
 
+Go语言(golang)： 语言层面支持并发（其它语言是通过库或者框架来支持），适合开发高并发的网络服务（无状态），Docker就是用Go语言开发的;
+
+Go语言：用于分布式系统，Docker，以太坊，特长是高并发；  
 Go Cloud: 用于跨云平台的服务开发； 类似的有： spring cloud;
+可以在cyber-dojo.org 在线编码测试；
+《GoByExample》，《Go 101》电子书，《EffectiveGo》
+<Go并发编程实战>第2版，多进程，多线程，
 
-
-耗子在极客时间专栏编程语言一节中推荐了很多参考书：《GoByExample》，《Go 101》电子书，《EffectiveGo》  可以在cyber-dojo.org 在线编码测试；
-
+耗子在极客时间专栏编程语言一节中推荐了很多参考书
+https://www.programming-books.io/essential/go/ Essential GO 免费在线书籍，非常棒
+https://github.com/hyper0x   极客时间专栏《GO语言36讲》作者，go命令详解，并发实战，优秀的go资源；
 https://coolshell.cn/articles/8460.html  Go语言语法  
 https://coolshell.cn/articles/8489.html  Go语言特性
 https://gobyexample.com/   Go by example
 https://go101.org/article/101.html   Go by 101 在线电子书
 https://golang.org/doc/effective_go.html   官方的effective GO;
-https://github.com/golang/go/wiki/Articles   Go精华文章列表，涉及：并发，Docker, OOP, PerformanceProfile, 反射（根据名字调用函数），交叉编译，移动开发；
+https://github.com/golang/go/wiki/Articles   Go精华文章列表，涉及：并发，Docker, OOP, PerformanceProfile, 反射，交叉编译，移动开发；
 https://mikespook.com/2012/02/%E7%BF%BB%E8%AF%91go-%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE/   Go环境设置
 https://talks.golang.org/2012/concurrency.slide  Go Concurrency patterns;
 https://www.slideshare.net/jpetazzo/docker-and-go-why-did-we-decide-to-write-docker-in-go  
 https://github.com/drone/drone  Go语言编写的基于Docker 的 持续集成环境
 https://www.jianshu.com/p/35a4ec1b3067  对于Go的编译，环境变量讲解的非常全面到位；
+https://github.com/threerocks/studyFiles  一些高质量电子书，包含go/javascript/python/数据库;
 
 Go 的优点是上手快、运行时性能高、方便的使用多核运算能力等，经常被提起的特性是超轻线程 goroutine、内置的内存队列 channel、极快的编译速度，
 非常适合于编写各种无状态应用服务，无需使用任何的第三方框架都能轻松写出一个高性能的 http 服务(因为包含了http pacakge);
@@ -25,46 +77,172 @@ Go 的优点是上手快、运行时性能高、方便的使用多核运算能�
 
 
 
-Go天生支持并发： 在语言层面通过Goroutine, channel 支持并发，而不是通过库或者框架来支持，Goroutine效果类似于线程，但是比线程的开销还小，每个Goroutine只需要几KB的堆栈空间，1个线程可以支持多个Goroutine，它们通过Channel通信;
+Go天生支持并发： 在语言层面通过Goroutine, channel 支持并发，而不是通过库或者框架来支持，Goroutine效果类似于线程，但是比线程的开销还小，每个Goroutine只需要几KB的堆栈空间（而且会动态调节？），1个线程可以支持多个Goroutine，它们通过Channel通信, Go的内置调度器把M个go routine映射到N个CPU，也就是说同一个线程上创建的go routine也可以同时执行;
+用户空间线程和内核线程之间的映射关系有：N:1,1:1和M:N，CPU分配是以内核线程为对象的， go的调度器实现的就是M:N;
 
+1. Go 语言结合了C语言和Python语言的语法，还有垃圾收集机制； Go的语法是从左到右读的，焦点在左边； Go语言有指针，面向对象；
+2. go语言是静态类型的，一旦在初始化变量时确定了类型就不能再改变类型，而且是在编译期确定的类型，不会影响效率，同时go又有类型推导的功能，利于代码的重构和维护；
+3. Go文件分类: 1)包含package main + main()的 .go文件是“命令源码文件”，编译后可执行， 文件名是_test.go且函数是Testxxx或BenchmarkXXX的是“测试源码文件”，其它的是“库源码文件”， 编译后为xxx.a; 
+4. 环境变量:  go env 显示所有环境变量，GO_ROOT:go的安装目录，GOPATH:workspace目录，GOBIN(设置为bin目录), GOARCH(buil的环境的cpu),GOOS(build OS),GOHOSTARCH(target cpu), GOHOSTOS(target OS);
+5. 工作区子目录: src(源码), pkg(包xxx.a), bin(go install安装到这里)，src目录下的每个子目录对应1个package,具有相同package的.go文件放在同一个目录中；go文件中声明的package name与该go文件所在的目录名可以不同，但同一个目录下的go文件的package name声明必须一致，在build时，生成的库名是目录名(不是package name)，比如test/a.go+b.go , go build test得到test.a，在import的时候import test, 但是在使用这个package符号的时候是用package name; 总之：import dirname,   符号引用 package_name.symbol; 最佳实践：源文件中声明的package name和所在的目录名保持一致；
+6. GO的基本命令: 编译相关 build/get/install/run ;     go get(download dependency), go build, go clean, go env, go install, go list(list package),  go test,  go version, go fmt(格式化代码); 
+7. GO命令的参数： -n(仅打印过程但不执行)， -race(检测并发竞争)， -v(显示涉及到的代码包)，-work(保留产生的temp目录)，-x（打印过程命令并执行）  -a(重新编译自己的代码和标准库的代码)
+8. go程序编译后就是二进制可执行程序，和C++程序一样直接运行，但是在linux下编译的go程序不能在windows下运行，必须重新编译生成；
+9. main函数是程序的入口，直接运行： go run hello.go   或者 先编译 go build hello.go 再执行 ./hello
+10. 外部符号：首字母大写的符号是public的，才可以被其它包的代码可见，否则是private的，只能在包内可见（注意是包内，不是文件内），相当于internal包；
+11. 打印： fmt.Println(xx); 如果要支持%格式，用fmt.Printf("%f", 2.2);  msg := fmt.Sprintf("%d",i ) 需要  import "fmt",  自定义打印: printLog(format string, args ...interface{}) ， 格式化： %T打印动态类型，%q打印字符串，%v打印struct, %+v 打印struct字段名和值, %U打印unicode, %b 二进制，%x 16进制;  打印切片时会打印每个元素(打印语法和单个元素类似)；
+12. 依赖导入: 对于import的库，可以使用相对路径，或者 $GOPATH/src/下的子路径；import(nickName "xxx") 别名；
+13. 变量定义：   eg:  var x  int = 30 ;   var  i,j,k int = 1,2,3;    var b = true; var tmp = map[string]int{xxx}
+14. 取地址： var obj *Model; 注意 obj 和 &obj 是不一样的，这点特别坑 ,另外， 当把一个带类型的nil赋值给一个interface{}变量，则后者不为nil,只有赋值字面量nil给interface{}后者才为nil；
+    1. 指针变量,特别小心坑： var ret *Resp  ,  默认初始化ret=nil
+    2.  json.NewDecoder(response.Body).Decode(&ret) //ok  这里一定要用取地址符
+    3.  json.NewDecoder(response.Body).Decode(ret) //error due to nil
+15. 常量:   const s string = "hello"  
+16. go语言是大小写敏感的；
+17. 数据类型 ：  bool, byte ,rune(int32), int8, int16, int32, int, int64, float32,  float64,  complex64,   const, pointer, string, int,  slice, array，map, chan, 结构体struct，接口interface(empty interface{}), 函数func；go语言没有集合set;
+    1.  其中slice, map,chan, func，interface接口 是引用类型(initial to nil)，    而数组, struct, string 是值类型；
+18. 数组：大小固定， 不论是否放入元素，len=capacity,  var arr [5]int      带初始化：  b := [...]int {1,2,3};  二维:  var arr  [2][3] int ；  
+19. 切片：动态数组 类似C++的vector, 容量自动扩充, 引用类型，可以=nil,   b := [ ]int{1,2,3} ;  注意: b :=[...]int{1,2,3}是数组；
+    1. 对于切片，不初始化则为nil,   和“初始化空”是不一样的，后者不为nil因为分配了内存,对于nil的list,可以直接append,  lista =  append(lista, xx) 对于lista=nil也可以；
+    2. buff := make([]int,5, 8); // len(buff)=5, cap(buff)=8, value=[0 0 0 0 0];
+    3. buff := make([]int, 5) ;  // len(buff)=5, cap(buff)=5, value=[0 0 0 0 0];
+    4. for idx,  v := range lista {v.m = xx}; 这行不能修改list元素，改变的是副本；
+    5. for i :=0; i < len(lista); i++ {lista[i].m = xx} 这行代码能够修改list的元素；必须通过游标；
+    6. sliceA =  append(sliceA, v);添加元素， sliceA = append(sliceA, sliceB...) 连接切片
+    7. 删除元素 a=append(a[:i], a[i+1:]...)   or  : a[i] = a[len(a)-1]    a=a[:len(a)-1]    后者更快但是不保持顺序；如果元素是指针，会导致内存泄漏， https://github.com/golang/go/wiki/SliceTricks
+    8. 切片是引用，s2:=s1[3:6]， len(s2)=3，但是cap(s2)=cap(s1)-3;  其实s2/s1指向同一块内存，只是起始不同，终点相同；
+    9. 比较数组和切片：切片只能顺序插入元素，不能任意位置放入元素，切片只在"有效元素"范围内支持随机索引；数组可以随机位置放入元素（因为数组的Length在初始化就固定了）
+20. map:  引用类型 ;    插入:  kv["g"] = true ;    删除：  delete(map, v) , map的key类型优先考虑数值和指针，短字符串，不建议用struct,数组等高级类型；如果key不存在，查询时map[k]会返回Value的零值；
+    1. 初始化 m : = make(map[string]int).  Or. m : = map[string][int]{“A”: 10}  Or m := map[T]U{ }初始化为空的map 
+    2. 坑：var m map[T]U， 这时没有初始化， m=nil,这时插入m[x]=y会导致panic; 所以，对于map如果不初始化是不能插入元素的，但是可以查询，会返回nil；
+    3. for key := range map;  for k,v := range map; for _, v := range map
+    4. v, found  := map[key]   如果存在key,  found=true
+    5. 比较map,slice: 对于map必须初始化才能插入元素，否则只能查询元素，对于slice,不需要初始化也可以append元素；
+21. 变量类型自动推导:  var i = 100 ;   而  x :=  100; 只能用在函数内部或者if/switch/for的初始化中；变量类型一旦确定了就不能再改；变量类型转换：Type(obj) ;变量类型判断: v, err := obj.(Type)   ; 细节：Type{xx}是初始化，而Type(xx)是类型转换；
+    1. type-convert：strs, ok := interface{}(obj).([]string)  变量必须先转为interface{}类型后才能判断Type;如果转换失败就不能使用，否则会导致panic, 所以一定要先判断是否转换成功才能继续使用;
+    2. go不支持把interface{}类型的nil转为一个不相关的*struct，会报panic, 但可以把字面量的nil赋值给*struct;
+22. 类型扩展:  type MyString  string，通过这种方式可以扩展基本类型的功能，比如func(MyString)Encode()，这时用MyString定义的变量不能直接和string变量比较（类型不匹配）， 在源类型和扩展类型之间，仅支持单个元素的显式类型转换（不支持单个元素的隐式转换，不能直接赋值，会引发编译错误），不支持容器类型的显式转换。refer to: demo14.go;
+23. 类型别名：type MyString = string , 这时两个类型定义是完全等价的，它们的变量是可以直接比较的；别名是为了代码重构而存在的，比如byte是uint8的别名，rune是int32的别名；
+24. 重载与可变参数： go 语言是通过可变参数的方式来支持重载的，eg:func New(Server, ...*Config);   t1 :=  New(s);  t2 := New(s,&Config{x})
+25. import别名：当一个pkg内出现多个同名的struct（在不同的文件中定义）, 可以通过显示指定import路径并取别名来访问；
+26. 函数：函数是一等公民，可以当值来传递和使用(注意：struct关联的函数不能当值传递)，支持闭包， func name(input)(output){ return } 可以同时返回多个结果，不一定要表现在return语句，只要在函数体中对output赋值就可以了， 标准库函数一般返回2个值，一个表示错误码， eg:   n,err := conn.Read(buff); if  err != nil{}
+    1. 闭包：如果一个匿名函数捕获了当前scope的变量(入参，Reciever变量，局部变量等)，这个变量的内存会等到函数执行完毕才释放，即使这个函数是延迟执行；
+    2. 函数的类型是func (receiver ) name (input) (output)；函数能使用的信息来自input+receiver;
+    3. 函数的返回结果有2种方式：a)在output中；b)在入参中通过传入地址，eg: func(ret interface{} )； 调用func(&result)后result就有了结果；
+    4. 函数类型定义: type MyFunType func(in)(out); 实参可以是全局函数 或 空Struct关联的方法；
+    5. 返回列表可以只有类型，没有名字，eg: func xxx(input)(*server, error){return svr, err}
+27. 接口类型： type Drawer interface{ draw() } ,  var obj *Drawer = new(Circle),  Circle实现了接口Drawer的所有方法，new返回的是一个指针，     空接口类型: interface{} ， 任何类型都是它的实现类型，类似于java里面的Object,  判断变量是否是指定类型:  _, ok := obj.(TypeX) ; 其中TypeX可以是interface也可以是具体的struct,  如果是interface可以调用其中的方法，如果是struct可以使用其中的字段;
+28. 接口实例化：实现了接口所有方法的struct实例；接口关注的是输入输出，不关注receiver, 但在实现接口时, 一般都需要从receiver获取数据，也就是说method的输入=函数入参 + receiver,  而 receiver 就能体现多态和扩展性；
+29. 组合： Go语言里没有继承机制，但是可以在接口里面包含其他的接口，达到功能扩展，体现了组合优于继承的原则；
+30. 多态： 只要实现了接口中的所有方法就可以，语法层面没有任何耦合；结合Embedding机制的多态更加灵活，比如Label实现了Click interface, 然后Embedding : type Button Struct{Label }，虽然Button本身没有再去实现Click方法，但是它的Embedding成员Label实现了，所以Button也自动实现了，因此Button也是Click的实例，这个技巧非常强大！！
+    1. 多态可以跨pkg, 就是说A的pkg中的struct method 可以实现B pkg的interface;
+31. 空接口：interface{}, 底层是个复杂的数据结构，封装了动态类型和值，通过type=reflect.Typeof() 获取类型（进而获取方法：type.Method(i)），reflect.ValueOf()获取值；通过反射只能得到public属性（首字母大写）；go语言中的范型是通过空接口实现的；
+32. 指针与解引用： var i int = 20;  var ptr *int ;   ptr = &i;    fmt.println(*ptr );  这与C语言类似；在go函数入参&obj == &&obj 
+33. unicode字符:  打印中英文%q,    打印unicode编码用%U， 转换: “你” == string([]byte{'\xe4','\xbd','\xa0'}) == string([]rune{'\u4F60'})   参考极客demo13.go;
+34. 多变量同时赋值:   a,b  = b, a 交换 ， go语言支持unpack; 
+35. struct面向对象: struct的关联方法定义，比如定义structA的一个成员函数：  func (obj *structA) paint(input) output {}  注意这里的指针，go语言是面向对象的，用struct定义类，成员函数定义在struct外部， eg: func (obj classA) name(input)(output){xxx}，对于go语言的基本类型，也可以自定义关联方法来扩展其功能；
+    1. struct里面包含interferce字段时其实是包含了一个（实现该接口的具体类的）实例，并不是说包含方法；
+    2. struct实例化：一个structA要成为interface的一个实例，有2种方式：a）A亲自实现这些方法；b)Embeding一个其它的structB(当然B已经实现了这些方法)，而且必须是Embedding方式;
+    3. struct里面也可以包含字段，该字段类型是函数类型；
+36. new:   ptr := new(structXXX) 创建实例，等效于 &structXXX{xx}
+37. 技巧：如果要调用一个空的Struct的关联方法，可以定义该Struct的一个全局的指针，且不用初始化；
+38. 一个空的struct：type xxx struct{} 这样是为了关联方法，把一组方法封装在一起，更好维护，这时的receiver用占位符_
+39. 封装：符合命名首字母小写是private的，其它pkg不能访问；
+40. 循环: for i:=0; i<2; i++{}    或者  for{...break;}  或者  for condition{}；
+41. for range: range可以操作数组,切片，字典，channel, string ;  range操作的其实是副本，对于值类型和引用类型，同样的代码结果不同；当range操作数组时要小心， for k,v := range map { xx }  也可以,   for k := range map{}  或者 for _, v := range map{} , 
+42. 遍历channel:  for ele:= range channel{xxx} 如果channel为空，refer to: https://gobyexample.com/range-over-channels
+43. switch-case:  case 不必是常量，可以是表达式,  从上到下的顺序匹配case,直到匹配成功为止，而且只匹配1个，等价于 if---else if----else if ，switch后面可以为空，比如switch {case xx : do xx default :  do}, case可以有多个表达式，比如 case val1, val2 :   注意case中不用break了；
+    1. 如果case中是接口类型，一定要确保它们的动态类型一致，否则会导致panic;
+    2. 如果case中的值是常量，则编译器会保证唯一，如果是变量，出现值相等的情况则按代码顺序选中第1个匹配的case；
+    3. fallthrough：Go里面switch默认相当于每个case最后带有break，匹配成功后不会自动向下执行其他case，而是跳出整个switch, 但是可以使用fallthrough强制执行后面的case代码.
+44. Type switch : switch 中的case 可以是类型，switch t.(type){case bool:} ；t是interface{}
+45. 接口查询:  if _, ok := obj.(Open);   如果Open是一个接口，则用途是接口查询，如果Open是一个实现类，则用途是判断obj是否是Open类的实例；
+46. 跳出多层循环:  break Loop或者continue Loop; Loop 是一个外层for循环的Label; 对于for+switch的场景比较好用；
+47. 枚举：const+iota,  iota从1开始，每行自动递增1，在当前所属的scope内有效；const内可省略重复表达式；
+48. go语言中成员的访问权限大写开头的是public的；
+49. 字符串: import "strings" ,    strings.split()/Join([]string, sep);   连接: str1 +=  str2; strings.SplitN(); strings.HasPrefix(str, prefix), pos:=strings.Index(str,":"), ret=str[:pos], 
+50. strconv.Atoi/ItoA:  字符串数字转换
+51. strings.Builder(带缓冲区):  Grow(N), N=capacity,  .Write/WriteByte/WriteRune/WriteString to append builder;
+52. 语句结束不必显示加分号，对于控制语句，最好在行尾跟{
+53. go routine: 协程，使用 go 调用函数或者匿名函数，go routine会一直运行下去直到阻塞或者主动让出CPU；如果阻塞，其他的go routine执行，这些go routine虽然由同一个线程创建但是可以在多个CPU上执行；在多核上go routine会并发执行；go routine之间的通信可以用channel; 一个go程序至少有2个go routine:main + GC(隐式创建)
+54. 加锁： var mutex = &sync.Mutex{}   ;   mutex.Lock();  mutex.Unlock();
+55. 原子操作： atomic.AddUint32(&cnt,  1); 可以查看go的atomic包 文档 http://golang.org/pkg/sync/atomic/
+56. channel信道： 阻塞特性+等待通知：如果满了就阻塞写，如果空了就阻塞读；完成的功能相当于mutex+condition_variable，从语言层面就支持这种通信机制非常酷， 这个特性可以用来创建线程池，从channel获取任务处理； close(channel)会通知对方，不用再等待了，对方就不会一直阻塞；当channel被close时，channel里面的元素仍然会保留直到被消费掉；
+57. channel分为单向和双向: 单向channel用于约束接口声明，函数的入参和返回值（从而约束调用方），传递的实参是双向channel;
+58. select-case: channel 复用， 如果有default分支则不会被阻塞, 否则会阻塞直到有满足条件的case分支，select会对所有分支求值，如果有多个满足条件的case则会随机选择1个执行, case中只能是channel表达式，如果channel阻塞则case不成立； refer to:  https://time.geekbang.org/column/article/14664 
+59. 随机数：   rand.Seed(time.Now().Unix()) ，    cnt := rand.Intn(10)
+60. 定时器：  起1次性定时器 timer := time.NewTimer(2*time.Second)    ; 起周期定时器： ticker := time.NewTicker(time.Second)；time.AfterFunc(time.Second, func(){})； 等待超时 <- timer.C  ； 
+61. 异常： panic(xxx) 抛异常， defer + recover 捕获异常；if err != nil {panic(err.Error()) }  
+62. 错误处理： switch err{case nil: ok   case io.EOF:  return    default: return }   ;  
+    1. 用类型扩展(Embedding）不断的包装（内嵌字段用相同的名字），建立起可追根溯源的链式错误表达，这是一种错误处理的优秀实践；
+    2. var ErrNotFound = errors.New("Not Found")  因为返回的是接口类型，只能赋值给变量，不能赋给常量；
+63. defer: 预调用，在函数返回前才真正执行，用来释放资源，defer代码之前的return不会触发defer调用，多个defer的话逆序执行，因为这些defer生成的函数对象会压栈， 比如 defer f.close();    defer mutex.unlock();
+    1. defer func(input){outer_var}(actual) 这里的实参actual是在defer定义的时候就计算出来了，而函数内用到的outer变量是在函数返回前才计算的，也就是函数真正执行的时候才计算；
+64. Sock:   listerner,err := net.Listen("tcp", "xxxx:port");   conn,err := listener.Accept();  conn.Read(buf); conn.Write(buf[0:n]);   client:  conn, err := net.Dial("tcp", "ip:port");
+65. go程序初始化流程: import包的初始化---本地全局变量初始化 --->本地init函数--->main函数，注意：1个源文件可以包含多个init()，执行顺序随机,  init函数不能被其它函数调用；
+66. 系统调用: 类似于C语言的系统调用，两个关键包: os (setenv, getenv),  syscall( Getpid, Chdir)  ; OS包有3个子包，Exec, Signal, User;  eg: cmd := exec.command("ping", "127.0.0.1")  ;  out,err := cmd.Output()
+67. 命令行参数:  Go语言提供了一个flag包可以非常容易的解析程序入参，还能设置默认值, eg:   flag.StringVar(&host, "host", "default value", "description ") ，记得调用：flag.Parse()来解析，程序运行： ./test.go -host=localhost ,解析整数：flag.IntVar(); 注意 flag.String()返回的是已分配内存的指针，而flag.StringVar()要求用户提供内存；
+68. GOMAXPROCS: 这个参数是go调度器能使用的物理线程数（内核原生线程），代表多少个go routine可以真正在多核上同时运行；
+69. go语言中如果多个go routine要直接操作全局变量的话，还是要用mutex加锁保护的，建议多用channel来通信，少用shareMemory;
+70. go 里面除了go routine 外， 没有必要再去显示创建多个native线程 因为go调度器会自动去创建GOMAXPROCS个物理线程，go routines会被分组，每个组映射到1个原生线程，在多核中，这些go routines会真正并发执行，每个物理线程都会主动去找go routine来执行，Go调度器并不是跑在一个单独的物理线程，所有的物理线程都参与调度，go routine与物理线程的关系是动态的（也可以锁定）；1个go程序最多可以使用10000个linux native线程；1个go程序就是1个进程，每个go程序在链接时都会把go调度器(runtime package)链接进去(都是静态链接);
+71. 管道: cmd := exec.Command(xxx); cmd.Stdout = &outputBuf 重定向; cmd.Start(); cmd.Wait();   cmd2.Stdin = &outputBuf  把cmd1的输出作为cmd2的输入， 其中 var outputBuf bytes.Buffer 起到了管道的作用；
+72. 带缓冲的buffer:   bufio.NewReader(stdout0) ; ReadLine(); ReadBytes('\n')返回切分后的消息，以'\n'为标记，NewScanner(), Scanner, NewWriter();Flush(); 
+    1. var buffer bytes.Buffer,  buffer.WriteString()/WriteByte(), buffer.Bytes()
+73. 网络： listener := Listen("tcp", "127.0.0.1:8080"), listener.Accept(); conn :=net.Dial("tcp", "127.0.0.1:8080 "), 虽然底层的socketfd是非阻塞的，但是因为采用了类似linux select的方式，go语言提供的读写API比如conn.Read()/Write()对应用程序来说是阻塞操作，conn.SetDeadline(time.Now().Add(2*time.Second)) 读写超时后返回错误，可用来判断空闲链接和检测响应时延, conn.SetDeadline(time.Time{})取消超时限制；
+74. 网络包： net/http,  net/rpc; 
+75. io 包:  io.WriteString(dst, str); 
+76. Channel: 本质是个FIFO queue, 放入通道的其实是副本，channel是并发安全的，可以允许多个goroutine同时读写；
+77. Map: map不是并发安全的，sync.map才是并发安全的；
+78. sync.waitGroup:  Add/Done/Wait 类似于countDownLatch, 用于多个goroutine协作，也可以用context包；所有的wait都会被唤醒；
+    76.Context: background,WithCancel/Deadline/Timeout/Value,cancelFunc, refer:https://time.geekbang.org/column/article/42158
+    77.GO语言的同步工具：sync.Mutex/RWMutex, sync.Cond, atomic, sync.Once, sync.WaitGroup, sync.Pool, context.Context;
+    78.struct tag: type Key Struct{id string `json:"id"  bson:"id" `     , 反引号里面的字符串对应数据库里面的字段名, 用于和数据库交互; 举例：reflect.Typeof(v).Field(0).Tag.Get("json"), 输出"id" ; 常见的tag: bson, json, xml, flag;
+    79.Embedding：字段名就是类型名， 外层的struct的同名字段/方法会屏蔽掉内层的同名变量和方法，不过b可以显示的链式调用内层方法/字段, 如果外层struct没有定义该方法，则可以直接调用到Embedding成员方法，找函数实现的时候，从外往里找，如果外层找不到函数实现，那就往Embedding成员找（跳过非Embedding成员）；
+    80.io.ReadCloser: 内含读计数器，每次读取后都会自动偏移，最后读完返回EOF；
+    81.测试打桩步骤：1）把产品中的 method提取为interface; 2)字段类型提升为interface类型；3）ut中新建一个空的struct，实现该interface;4)用空struct建立对象并注入（替换code中的实例），从而完成stub; 注释：打桩可以跨pkg；
+    82.net/http: GO语言的http client被设计为2层结构，上面是负责业务的http.Client类，负责初始化httpMethod,URL,header,body，下层是传输层transport类，实现了RoundTripper(*req)(*resp,err)接口(http事务)，负责http底层传输，代理，连接池, transport是个实现类，包含几个重要的字段:keepalive, maxIdleConnsPerHost；
+83.json.Unmarshal([]byte(str), &ret) 不论ret这个struct中的字段比实际数据流多还是少，都不会出错，只要数据流是json格式，最后的结果是交集；但特别注意只有struct中的大写字母开头的字段才会被marshal/unmarshal；特别注意：当str==""时，unmarshal会报错，所以一定要先判断str是否为空；
+84.go语言可以方便的操作mongo,是因为go支持反射, 通过驱动mgo很容易的把一个document变成struct, 如果不知道document具体结构可以用map[string]interface{}，因为每个doc都是一个bson.Map;
+85.fmt.Println(string(debug.Stack()))
+86.作用域：if{}里面的变量如果使用 := 赋值，则该值不会传递到外面，尽管该变量在外面也定义了，这个要特别小心；
+87.调试：获取上层函数的文件，行号：_,file,line,ok := runtime.Caller(1)
+88.错误调用链信息保存：type ErrorInfo struct{Err error;  File,line string};   ErrorInfo要实现error接口；
+89.TestFuncxxx(t *testing.T) 这里的函数名必须在Test后面是大写字母开头才会被自动测试到；
+90.http resp.Body: 因为http是基于tcp的，所以req/resp.body是一个数据流，一个socketfd, 当应用层拿到resp时只意味resp.header已经接收完成，但是resp.body还在接收过程中(body本质是一个socketfd,可以继续从中读取数据流直到数据接收完毕，所以body的类型是ReadCloser, 当程序从body read完之后要调用resp.Body.Close关闭连接)；
+91.正则匹配: path.Match(pattern, name) 这是go标准库path提供的功能；
+92.go语言标准库的http server只支持固定字符串的路由分发，匹配优先级："host/a/b"----> "/a/b" --> "/a"--->"/";  不支持path中带变量;源码参考：usr/local/go/src/net/http/server.go;
+93.比较interface{}变量：要特别小心，必须值和类型都相等，这两个变量才相等，仅值相等是不够的；
+94.定义struct时，如果要marshal或存入db, 成员字段一定要大写，否则会被忽略；
+95.tag中的omitempty对struct是无效的，对基本类型，指针，引用类型 有效，有效是指当为零值时marshal后不出现该字段；
+96.空字符Null char：在golang中，"\x00"是空字符，长度=1，不是空格，是一个合理的字符，比如：len("milk\x00milk")=9,   该字符不能用于文件名，可以用fmt.Printf("%q")打印，用%s打印不出来；这个字符和 "\000" 是同一个含义；
+97.json.Marshal(emptyMap) 会得到"null",   json.Unmarshal("null", &emptyMap) 不会报错，但是emptyMap == nil，如果直接使用会panic,所以要先初始化变量再传递给unmarshal()， 对于json来说，"null"是个特殊的字符串；
+98.编码checklist, 总结golang中的一些陷阱，形成一个checklist;  比如： 把一个带类型的nil赋值给interface{}后并不会是nil;  if 段里面定义的err 并不能传递出去； json.Unmarshal("null",y) 在不出错的情况下能发直接使用y;
 
-	1. Go 语言结合了C语言和Python语言的语法； Go的语法是从左到右读的，焦点在左边； Go语言有指针，面向对象；
-	2. Go文件分类: 1)包含package main + main()的 .go文件是“命令源码文件”，编译后可执行， 文件名是_test.go且函数是Testxxx或BenchmarkXXX的是“测试源码文件”，其它的是“库源码文件”， 编译后为xxx.a; 
-	3. 环境变量:  go env 显示所有环境变量，GO_ROOT:go的安装目录，GOPATH:workspace目录，GOBIN(设置为bin目录), GOARCH(buil的环境的cpu),GOOS(build OS),GOHOSTARCH(target cpu), GOHOSTOS(target OS);
-	4. 工作区子目录: src(源码), pkg(包xxx.a), bin(go install安装到这里)，src目录下的每个子目录对应1个package,具有相同package的.go文件放在同一个目录中；
-	5. GO的基本命令: 编译相关 build/get/install/run ;     go get(download dependency), go build, go clean, go env, go install, go list(list package),  go test,  go version; 
-	6. GO命令的参数： -n(仅打印过程但不执行)， -race(检测并发竞争)， -v(显示涉及到的代码包)，-work(不删除产生的temp目录)，-x（打印过程命令并执行）  -a(重新编译自己的代码和标准库的代码)
-	7. main函数是程序的入口，直接运行： go run hello.go（实际是编译为a.out）   或者 先编译 go build hello.go 再执行 ./hello
-	8. 打印： fmt.Println(xx); 如果要支持%格式，用fmt.Printf("%f", 2.2);  msg := fmt.Sprintf("%d",i ) 需要  import "fmt"
-	9. 依赖导入: 对于import的库，可以使用相对路径，或者 $GOPATH/src/下的go文件
-	10. 变量定义：   eg:  var x  int = 30 ;   var  i,j,k int = 1,2,3;    var b = true; 常量:   const s string = "hello"
-	11. 变量类型自动推导:  x :=  100;   
-	12. 数组：   var arr [5]int      带初始化：  b := [5]int {1,2,3,4,5};  二维:  var arr[2][3] int ；  buff := make([]byte , LEN); 支持切片： conn.write(buff[0:n])  
-	13. 循环: for i:=0; i<2; i++{}    或者  for{...break;}  或者  for condition{}；
-	14. range for :   for _, env := range os.Environ() { xx }
-	15. switch-case: 支持 case 字符串， 比如 case ".html", "htm" : 
-	16. go语言是面向对象的，用struct定义类，成员函数定义在struct外部， eg: func (obj classA) name(input)(output){xxx}
-	17. go语言中访问权限都是public的；
-	18. 继承：
-	19. 字符串: import "strings" ,    提供类似python的功能, strings.split()
-	20. 函数定义： func name(input)(output){ return } 不是通过return返回结果，而是通过output， 标准库函数一般返回2个值，一个表示错误码， eg:   n,err := conn.Read(buff); if  err != nil{}
-	21. 语句结束不必显示加分号，对于控制语句，最好在行尾跟{
-	22. go routine: 1个线程上的协程，使用 go 调用函数， 还可以使用匿名函数，go routine会一直运行下去直到阻塞或者主动让出CPU；如果阻塞，让出CPU给其他的go routine执行，这些go routine因为属于同一个线程只能在1个CPU上执行；go routine创建后会等待时机执行（主流程阻塞）；go routine之间的通信可以用channel;
-	23. 加锁： var mutex = &sync.Mutex{}   ;   mutex.Lock();  mutex.Unlock();
-	24. 原子操作： atomic.AddUint32(&cnt,  1); 可以查看go的atomic包 文档 http://golang.org/pkg/sync/atomic/
-	25. channel信道： 阻塞特性+等待通知：如果满了就阻塞写，如果空了就阻塞读；完成的功能相当于mutex+condition_variable，从语言层面就支持这种通信机制非常酷， 这个特性可以用来创建线程池，从channel获取任务处理； close(channel)会通知对方，不用再等待了，对方就不会一直阻塞；
-	26. select-case: channel 复用， select是阻塞的（可添加 timeout分支防止一直阻塞），如果不想阻塞，可添加default分支,  1次select调用只能处理1个channel, 所以外层要循环；
-	27. 随机数：   rand.Seed(time.Now().Unix()) ，    cnt := rand.Intn(10)
-	28. 定时器：  起1次性定时器 timer := time.NewTimer(2*time.Second)    ; 等待超时 <- timer.C  ； 起周期定时器： ticker := time.NewTicker(time.Second)， 这两者配合使用；
-	29. 异常： panic(xxx) 抛异常， defer 捕获；if err != nil {panic(err.Error()) }
-	30. 错误处理： switch err{case nil: ok   case io.EOF:  return    default: return }   ;  
-	31. Sock:   listerner,err := net.Listen("tcp", "xxxx:port");   conn,err := listener.Accept();  conn.Read(buf); conn.Write(buf[0:n]);   client:  conn, err := net.Dial("tcp", "ip:port");
-	32. go程序初始化流程: import包的初始化---本地全局变量初始化 --->本地init函数--->main函数，注意：1个源文件可以包含多个init()，执行顺序随机,  init函数不能被其它函数调用；
-	33. 系统调用: 类似于C语言的系统调用，两个关键包: os (setenv, getenv),  syscall( Getpid, Chdir)  ; OS包有3个子包，Exec, Signal, User;  eg: cmd := exec.command("ping", "127.0.0.1")  ;  out,err := cmd.Output()
-	34. 命令行参数:  args := os.Args 得到一个字符串数组，Go语言提供了一个flag包可以非常容易的解析程序入参，还能设置默认值, eg:   host := flag.String("host", "coolshell.cn", "a host name ") 返回的是指针，程序运行： ./test.go -host=localhost
+调试：
+Go & Dlv debug (dlv is much better than gdb)
+———————————————terminal debug
+dlv debug(no need set GOPATH, but must add dlv to $PATH):  
+ 	0.	go build -gcflags=all="-N -l"  xxx.go    //xxx.go should have main(); 加编译选项是为了增加调试信息
+ 	0.	dlv exec binName
+ 	0.	b main.main
+ 	0.	r = restart; c = continue; n = next;  bt = backtrace; s = step; q= quit;
+注意 不要用gdb, 用 dlv 更好调试go program;
+———————————————— vs code debug with dlv （事先编译出bin, must add dlv to $PATH）超级好用，dlv是go debugger tool;
+1.run "Debug:open launch.json" in cmd palette to open launch.json;
+2.modify:  
+ "mode": "exec",    这个模式是为了支持调试已经编译好的bin
+"program": "abs_path_to_bin"
+3.ok to debug;
+ 
+———————————————————
+------------------------------------------
 
+疑问: 1)channel可以用做任务队列吗？ 可以存函数对象吗？ 2)select-case如果有多个case满足，只能执行1个，那其它case中取出的数据怎么办？还是说不会取出。
 
-
+fun main(){
+go hello()  //这里启动一个routine , 立即返回，继续往下执行，不会等待hello()执行，如果没有go 关键字, 那会等hello()执行完再继续；
+fmt.Println("over")
+}
 
 channel 生产--消费举例：
 channel := make(chan string)//buffer=1
@@ -80,18 +258,118 @@ case msg1 := <- channel1:
 case msg2:= <- channel2:
 fmt.println(msg2)
 case <- time.After(x):   添加timeout分支
-break
+break  这个break是针对select，如果要直接退出循环，需要加标签
 }
 }
 
+func safelyDo(work *Work) {
+    defer func() {
+        if err := recover(); err != nil {  //截获panic
+            log.Println("work failed:", err)
+        }
+    }()
+    do(work)//trig panic()
+}
 
 周期定时器：
 ticker := time.NewTicker(time.Second)
 go func () {
-        for t := range ticker.C { 如果要退出循环，必须调用ticker.Stop()
+        for t := range ticker.C { 如果要退出循环，必须调用ticker.Stop(), ticker.C is channel;
             fmt.Println(t) 每次超时执行
         }
     }()
 
 
 
+for _, widget := range []interface{}{label, listBox, button1} {
+    if clicker, ok := widget.(Clicker); ok {  接口查询，查询widget是否实现了接口Clicker, 是返回true
+    	clicker.Click() //调用方法，
+    }
+}
+
+if v, ok := map[key] ; ok{
+}
+
+__________________________countDownLatch
+var wg sync.WaitGroup
+wg.Add(2)
+for i:=0; i< 2; i++{
+    go func(){
+         defer wg.Done()
+         xxx
+    }()
+}
+wg.wait() //会唤醒所有的wait goroutine;
+func main() {
+   mux := http.NewServeMux() //路由 机制 参考： net/http/server.go: ServeMux; 
+   mux.HandleFunc("/bye/", sayBye) //向 mux 注册回调，向map表中添加路由， 注册这种后缀带/ 的pattern， 会触发重定向("/bye" ==> "/bye/")，除非也注册了"/bye";
+   http.ListenAndServe("ip: port", mux) //监听端口，接收连接，接收数据，调用mux.ServeHttp(ResponseWriter, *Request)去处理，这个函数内部其实是查表来dispatch到对应的handle，按最匹配的pattern 去路由；
+}
+
+Adaptor 设计模式：
+go中可以通过Adaptor把一个普通的函数转为一个interface实例：
+type HandlerFunc func(ResponseWriter, *Request)   定义一个函数类型作为Adaptor!!
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) { //Adaptor关键：把Adaptor作为receiver，实现了接口http.Handler中的方法；
+  f(w, r)
+ }
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+func loggingMiddleware(next http.Handler) http.Handler {//返回一个接口实例
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {  把一个匿名函数通过Adaptor转为接口实例；
+        log.Println(r.RequestURI)
+        next.ServeHTTP(w, r)
+    })
+}
+string([]byte),  []byte(str)   https://golang.org/pkg/strings/
+json.Unmarshal([]byte(str),  outStruct) 把一个json str 反序列化为struct; 当str=""时，json.unmarshal会报错；
+举例：json.Unmarshal([]byte(`{"name": "tom"}`),  &result)
+bytes.NewReader([]byte(str))
+strconv.ParseInt(); strconv.ParseUint(), strings.Replace(src, r1, r2, n); strings.SplitN()/Contains()/HasPrefix/HasSuffix()/strings.Trim(s,"\n"),TrimSpace();
+if pos := strings.Index(s,":"); pos != -1 
+strings.HasSuffix()/TrimSuffix();
+http.HandleFunc(pattern, callbackfun) //callbackfun = func(http.ResponseWriter, *http.Request){}  注册路由回调；
+t.Log();  t.Skip()跳过当前case,不跑；
+time.Sleep(1e9=time.Second);  time.Add(time.Duration(N)*time.Second); t.Before(time.Now()); t.After();
+time.Local();
+time.Now().UTC().Format("20060102T150405Z")
+r = io.TeeReader(request.Body, w) //从body读取数据输出到2个地方:w和r;
+json.NewDecoder(resp.Body).Decode(&ret)
+url.Parse();
+req, _ := http.NewRequest("GET", "http://xxx", nil)   or  http.NewRequest("PUT", url, body) // body:= strings.NewReader("hello")
+req.Header.Set("Content-MD5", md5s)
+resp, err := http.DefaultClient.Do(req) ; defer resp.Body.Close(); 然后再处理resp.Body; 对于req.Body业务handle不需要去close,因为go标准库会做，但是resp.Body必须由业务去close;
+w := httptest.NewRecorder() ; 生成一个ResponseWriter对象，可以往其中写入数据；w.Header.Set(), w.WriteHeader(),io.WriteString(w,xx); w.Body.String();
+解析url path中的参数： flag.Parse(req.URL.Path[1:], flag.SW{Name:"key", Val: &k, Has: &hasKey}, flag.SW{..})
+fileContent, err := ioutil.ReadFile(filepath string) //读取本地文件
+sort.slice(s, less_func)
+log.Fatal()
+port := flag.string("p", "11200","port") ; flag.Parse(); 解析命令行参数: ./program -p 1000 
+编译时出现问题“import cycle not allowed” 一般是当前pkg里面的代码使用当前pkg name，去掉就好了；
+svr:=httptest.NewServer(http.Handler) //在单测中为服务起server, 端口号是系统自动分配的；
+httputil.ReverseProxy()//标准库自带的反向代理；
+b:=bytes.NewBuffer(nil);
+client := http.Client{Transport: tr, Timeout:x} ; tr = http.Transport{xx}; 一般会在http.DefaultTransport基础上封装一个，然后重新实现接口 RoundTrip(req)(resp, err), 这样就可以设置req.header,比如authorization;
+
+*******************************go get 安装并使用第3方开源包（不需要git clone，go get会自动下载源码到GOPATH目录下）
+设置GOPATH：export GOPATH=/Users/liangzeng/go ，必须用export,
+运行命令 go get -u github.com/gorilla/mux  (如果出错，通过go env查看GOPATH是否有值)
+源码会自动下载到 $GOPATH/src/github.com/gorilla/mux ，然后可以在任意目录下面新建project来使用这个pkg 了， 为了让vscode能够自动导入该pkg，还得在vscode 中修改settings.json, 在WorkspaceSettings>页面设置："go.gopath": "/Users/liangzeng/go/" ， 这样当代码中用到了该pkg时vscode就会自动import "github.com/gorilla/mux" ，也能看到源码；
+
+
+
+**************govendor add new pkg to kodo
+export GOPATH=~/qbox/kodo/ ;  务必保证GOPATH中只有1个目录，
+cd $GOPATH/src/qiniu.com/kodo ;  //因为这个目录下有一个vendor子目录（含vendor.json），所以在这里执行govendor命令 ,
+govendor get github.com/gorilla/mux // 执行成功，然后在 $GOPATH/src 下面会多出一个 github.com/gorilla/mux目录，表示成功下载依赖包，但是并没有自动拷贝到vendor目录下，
+执行 govendor add github.com/gorilla/mux ，把刚才下载到pkg拷贝到vendor下面(保持目录结构)，这时vendor.json文件也会自动加上这个新的pkg信息（比如revision记录了这次pkg对应的commitHashId）；
+
+**********************性能测试： go test -benchmem  -bench=.   性能测试，包含cpu,memory;
+测试用例（写在bench_test.go中）：
+func BenchmarkMyfunc(b *testing.B) {
+for i := 0; i < b.N; i++ {
+ 		func()
+ 	}
+}
+结果如下：b.N是test框架自动计算得到的，可以得到每次调用func的time cost, memory cost, memory alloc count.
+  500000              3209 ns/op            1248 B/op          9 allocs/op
