@@ -1,0 +1,16 @@
+
+
+redis缓存更新的策略：
+异步更新，修改的数据会直接写入mongo数据库，然后通过消息队列Nsq来让缓存失效（把key从缓存删掉），等到真正用的时候再重新获取最新值并设置到缓存；这种缓存模式称为Cache Aside模式；
+redis采用LRU策略淘汰数据（redis内部维护了一个按访问时间排序的数据结构，当读取数据时，需要更新这个结构，因为redis是单线程的，所以更新这个结构时不需要加锁，故性能很快）；
+当数据更新时，会发消息通知Nsq, 然后Nsq消费者会去刷新缓存，在更新bucket, rs info 时，需要刷新redis缓存,  对于rs info, 主要给 io 服务使用，所以有个独立服务iorefresh专门去刷缓存（从redis删除rs info）；
+Nsq的消费者：iorefresh
+代码：对于uc,  在spreadPut()里面刷，对于rspub, 调用notifyNsq(), 对于tblmgr,调用refreshBucket()；
+
+redis集群部署是怎样？
+官方手册：  https://redis.io/topics/cluster-tutorial  
+产品中使用了redis的两种模式：集群模式和哨兵模式，其中，io服务要连接redis的集群模式，其它服务连接redis的哨兵模式；
+redis 集群模式： 类似mongodb sharding，可以实现读写的负载均衡，路由规则：redis-client 根据公式  crc16(key) mod 16384 算出slot编号，然后查找缓存表看属于哪一个redis节点，每个节点存储一部分slots, 当扩容后，更新缓存表；注意：集群模式下，每个redis节点也需要配置多个副本保证高可用(master-slave model), 如果master node 挂了，cluster会自动从slave nodes选出新的master；
+client 是怎么知道redis节点和slot的映射关系的： 其实刚开始client并不知道，client算出slot后把请求发给随便一个node, 该node会告诉client应该redirect到其它node,这样client就可以缓存这个关系，以后就可以直接发给正确的node, 在扩容后也是通过这种redirect机制来更新缓存的；
+redis 哨兵(Sentinel)模式：哨兵监控了多个副本(1master+Nslave),   client刚开始把写请求发给哨兵（sentinel节点本身不存储数据），然后sentinel redirect to master,client 缓存master信息， 当master挂了，sentinel会选举出新的master, client需要刷新缓存，sentinel节点一般有多个，保证高可用；读请求可以发给任意的节点，sentinel监控的redis数据节点采用副本集模式（master-slave），类似mongodb replica；
+redis不支持ACID事务，相比memcache的优势是：1) redis支持master-slave,保证高可用，而memcache实例都是独立的master节点，挂了就挂了；2)缓存刷新简单：redis更新master节点后，数据会自动同步到slave节点，而对于memcache需要有一个专门的服务来刷新所有的节点，运维复杂；3）redis组成副本集后，写吞吐量比同样数量的memcache要低，读吞吐量是一样的，因为存储读多写少，所以可以接受；
