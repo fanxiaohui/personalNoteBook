@@ -1,3 +1,5 @@
+This Note is from google.
+
 *********************************
 Getting redis cli help
 *********************************
